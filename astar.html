@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
+	<title>A Star</title>
+	<style>
+	#sence{border:1px solid #ccc;margin:0 auto;display:block;}
+	</style>
+</head>
+<body>
+<canvas id="sence" width="800" height="800"></canvas>
+<input type="button" value="Start" onclick="eFindPath()" />
+<input type="button" value="Reset Start & End" onclick="resetSE()" />
+<input type="button" value="Add" onclick="setSolidStatus(1);" />
+<input type="button" value="Remove" onclick="setSolidStatus(2);" />
+<input type="button" value="End" onclick="setSolidStatus(0);" />
+<script src="lib/util.js"></script>
+<script src="lib/patch-enhancement.js"></script>
+<script src="lib/astar.js"></script>
+<script>
+var context = document.getElementById('sence').getContext('2d');
+var mapArray = [];
+
+for(var d1 = 0; d1 < 25; d1++){
+	var a = [];
+	for(var d2 = 0; d2 < 25; d2++){
+		if(Math.random() > .7){
+			a.push(1);
+		}else{
+			a.push(0);
+		}
+	}
+	
+	mapArray.push(a);
+}
+var pointsStatus = 2;
+var solidStatus = 0;
+var hitmap = new HitMap(mapArray);
+var startNode = null;
+var endNode = null;
+
+
+var split = 30;
+function initRect(){
+	context.clearRect(0, 0, 800, 800);
+	context.beginPath();
+	for(var i = 0; i <= hitmap.getWidth(); i++){
+
+		var x = split * i + 10.5
+		context.moveTo(x, 10.5);
+		context.lineTo(x, 790.5);
+	}
+
+	for(var i = 0; i <= hitmap.getHeight(); i++){
+		var y = split * i + 10.5
+		context.moveTo(10.5, y);
+		context.lineTo(790.5, y);
+	}
+
+	context.stroke();
+	context.font = '10px Arial';
+	context.textBaseline = 'top';
+
+	for(var y = 0; y < hitmap.getHeight(); y++){
+		for(var x = 0; x < hitmap.getWidth(); x++){
+			var px = x * split + 10.5, py =  y * split + 10.5;
+			if(hitmap.get(x, y) === 1){
+				context.fillStyle = '#900';
+			}else{
+				context.fillStyle = '#fff';
+			}
+			context.fillRect(px + 1.5, py + 1.5, split - 3, split - 3);
+			context.fillStyle = '#000';
+			//context.fillText(x + ', ' + y, px + 1, py);
+
+		}
+	}
+}
+
+initRect();
+
+document.getElementById('sence').onclick = function(e){
+	var canvasPos = util.getPosInDoc(document.getElementById('sence'));
+	var scroll = util.getScroll();
+	e.relX = e.clientX - canvasPos.left + scroll.left;
+	e.relY = e.clientY - canvasPos.top + scroll.top;
+	var px = ~~((e.relX - 10) / split);
+	var py = ~~((e.relY - 10) / split);
+	if(pointsStatus > 0 || solidStatus > 0){
+		setPoints(px, py);
+	}
+};
+
+function setPoints(px, py){
+	if(hitmap.get(px, py) == 1 && pointsStatus > 0){
+		alert('Can not set start point or end point at the solid area!');
+		return;
+	}
+	var node = new Node(px, py);
+	var pixX = px * split + 10.5, pixY =  py * split + 10.5;
+	if(pointsStatus == 2){
+		startNode = node;
+		context.fillStyle = 'rgba(0, 200, 0, 1)';
+		pointsStatus--;
+		context.fillRect(pixX + 1.5, pixY + 1.5, split - 3, split - 3);
+	}else if(pointsStatus == 1){
+		endNode = node;
+		context.fillStyle = 'rgba(255, 200, 0, 1)';
+		pointsStatus--;
+		context.fillRect(pixX + 1.5, pixY + 1.5, split - 3, split - 3);
+	}
+
+	if(solidStatus == 1){
+		hitmap.set(px, py, 1);
+		initRect()
+	}else if(solidStatus == 2){
+		hitmap.set(px, py, 0);
+		initRect()
+	}
+}
+
+function setSolidStatus(s){
+	solidStatus = s;
+}
+
+
+
+function eFindPath(){
+	var astar = new AStar(hitmap, startNode, endNode);
+	var path = astar.getPath();
+	if(!path){
+		alert('Can not find path');
+		return;
+	}
+	var cursor = 0;
+	var timer = setInterval(function(){
+		var minPoint = path.nodelist[cursor];
+		var px = minPoint.x * split + 10.5, py =  minPoint.y * split + 10.5;
+		context.fillStyle = 'rgba(0, 180, 240, .2)';
+		if(!minPoint.equal(startNode)){
+			context.fillRect(px + 3.5, py + 3.5, split - 7, split - 7);
+		}
+		cursor++;
+		if(cursor >= path.nodelist.length){
+			clearInterval(timer);
+			showPath();
+		}
+	}, 20);
+
+	function showPath(){
+		var endPoint = path.nodelist[path.nodelist.length - 1];
+		var timer = setInterval(function(){
+
+
+			var px = endPoint.x * split + 10.5, py =  endPoint.y * split + 10.5;
+			context.fillStyle = 'rgba(0, 200, 0, .9)';
+			if(!endPoint.equal(startNode)){
+				context.fillRect(px + 6.5, py + 6.5, split - 13, split - 13);
+			}
+
+			endPoint = endPoint.parentNode;
+			if(endPoint === null){
+				clearInterval(timer);
+				alert(astar.diffTime / 1000);
+				return;
+			}
+		}, 20);
+	}
+
+}
+
+function resetSE(){
+	initRect();
+	pointsStatus = 2;
+	solidStatus = 0;
+}
+</script>
+</body>
+</html>

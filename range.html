@@ -30,7 +30,7 @@ for(var d1 = 0; d1 < 80; d1++){
 	mapArray.push(a);
 }
 var hitmap = new HitMap(mapArray);
-var split = 10;
+var split = 30;
 function initRect(){
 	context.clearRect(0, 0, 800, 800);
 	context.beginPath();
@@ -81,11 +81,11 @@ document.getElementById('sence').onclick = function(e){
 
 function setPoints(px, py){
 
-	var list = getRange(new Vector(px, py), 10);
+	var list = getRange(new Vector(px, py), 3);
 	for(var i = 0, len = list.length; i < len; i++){
 		var n = list[i];
 		var pixX = n.x * split + 10.5, pixY =  n.y * split + 10.5;
-		context.fillStyle = 'rgba(255, 0, 0, .2)';
+		context.fillStyle = 'rgba(255, 0, 0, .5)';
 		context.fillRect(pixX + 1.5, pixY + 1.5, split - 3, split - 3);
 	}
 };

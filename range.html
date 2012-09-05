@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
+	<title>RANGE</title>
+</head>
+<body>
+<script src="lib/oo.js"></script>
+<script src="lib/entities.js"></script>
+<script>
+var target = new Vector(2, 2);
+
+var rang = 2;
+
+var preColumn = target.x - rang;
+var nextColumn = target.x + rang;
+var preRow = target.y - rang;
+var nextRow = target.y + rang;
+
+var list = [];
+
+
+for(var x = preColumn; x <= nextColumn; x++){
+	for(var y = preRow; y <= nextRow; y++){
+		var dx = Math.abs(x - target.x);
+		var dy = Math.abs(y - target.y);
+		
+		if(dx * dx + dy * dy <= rang * rang){
+			var n = new Vector(x, y);
+			
+			n.equal(target) || list.push(n);
+		}
+	}
+}
+
+console.log(list);
+
+</script>
+</body>
+</html>

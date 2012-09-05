@@ -124,3 +124,58 @@ var CursorPointer = function(pos, width, height){
 };
 
 extend(CursorPointer, EntityObject);
+
+var HitMap = function(pos, name, widthCount, heightCount, tileWidth, tileHeight, tilesData, tilesetMgr){
+	HitMap.parentConstructor.call(this, pos, widthCount * tileWidth, heightCount * tileHeight);
+	var mapArray = new Array(heightCount);
+	for(var i = 0, len = tilesData.length; i < len; i++){
+		var x = i % widthCount;
+		var y = ~~(i / widthCount);
+		
+		if(mapArray[y] === undefined){
+			mapArray[y] = [];
+		}
+		var gid = tilesData[i];
+		
+		if(gid > 0){
+			mapArray[y][x] = 1;
+		}else{
+			mapArray[y][x] = 0;
+		}
+	}
+	
+	this.getWidth = function(){
+		return widthCount;
+	};
+	
+	this.getHeight = function(){
+		return heightCount;
+	};
+	
+	this.getPassable = function(x, y){
+		if(this.getReachable(x, y)){
+			return mapArray[y][x] !== 1;
+		}
+		return true;
+	};
+	
+	this.getReachable = function(x, y){
+		if(x >= 0 && y >= 0 && x < this.getWidth() && y < this.getHeight()){
+			return true;
+		}
+		
+		return false;
+	};
+
+	this.get = function(x, y){
+		return mapArray[y][x];
+	};
+	
+	this.set = function(x, y, value){
+		mapArray[y][x] = value;
+	};
+	
+	this._draw = function(context){};
+};
+
+extend(HitMap, EntityObject);

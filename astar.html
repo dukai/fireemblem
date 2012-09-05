@@ -21,9 +21,9 @@
 var context = document.getElementById('sence').getContext('2d');
 var mapArray = [];
 
-for(var d1 = 0; d1 < 25; d1++){
+for(var d1 = 0; d1 < 80; d1++){
 	var a = [];
-	for(var d2 = 0; d2 < 25; d2++){
+	for(var d2 = 0; d2 < 80; d2++){
 		if(Math.random() > .7){
 			a.push(1);
 		}else{
@@ -40,7 +40,7 @@ var startNode = null;
 var endNode = null;
 
 
-var split = 30;
+var split = 10;
 function initRect(){
 	context.clearRect(0, 0, 800, 800);
 	context.beginPath();
@@ -65,7 +65,7 @@ function initRect(){
 		for(var x = 0; x < hitmap.getWidth(); x++){
 			var px = x * split + 10.5, py =  y * split + 10.5;
 			if(hitmap.get(x, y) === 1){
-				context.fillStyle = '#900';
+				context.fillStyle = 'rgba(0, 100, 200, .9)';
 			}else{
 				context.fillStyle = '#fff';
 			}
@@ -136,9 +136,9 @@ function eFindPath(){
 	var timer = setInterval(function(){
 		var minPoint = path.nodelist[cursor];
 		var px = minPoint.x * split + 10.5, py =  minPoint.y * split + 10.5;
-		context.fillStyle = 'rgba(0, 180, 240, .2)';
+		context.fillStyle = 'rgba(0, 240, 240, .5)';
 		if(!minPoint.equal(startNode)){
-			context.fillRect(px + 3.5, py + 3.5, split - 7, split - 7);
+			context.fillRect(px + 1.5, py + 1.5, split - 3, split - 3);
 		}
 		cursor++;
 		if(cursor >= path.nodelist.length){
@@ -153,7 +153,7 @@ function eFindPath(){
 
 
 			var px = endPoint.x * split + 10.5, py =  endPoint.y * split + 10.5;
-			context.fillStyle = 'rgba(0, 200, 0, .9)';
+			context.fillStyle = 'rgba(200, 0, 0, .9)';
 			if(!endPoint.equal(startNode)){
 				context.fillRect(px + 6.5, py + 6.5, split - 13, split - 13);
 			}
@@ -161,7 +161,7 @@ function eFindPath(){
 			endPoint = endPoint.parentNode;
 			if(endPoint === null){
 				clearInterval(timer);
-				alert(astar.diffTime / 1000);
+				console.log(astar.diffTime / 1000);
 				return;
 			}
 		}, 20);

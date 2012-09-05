@@ -3,38 +3,117 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
 	<title>RANGE</title>
+	<style>
+	#sence{border:1px solid #ccc;margin:0 auto;display:block;}
+	</style>
 </head>
 <body>
+<canvas id="sence" width="800" height="800"></canvas>
 <script src="lib/oo.js"></script>
 <script src="lib/entities.js"></script>
+<script src="lib/util.js"></script>
+<script src="lib/patch-enhancement.js"></script>
+<script src="lib/astar.js"></script>
 <script>
-var target = new Vector(2, 2);
+var context = document.getElementById('sence').getContext('2d');
+var mapArray = [];
+for(var d1 = 0; d1 < 80; d1++){
+	var a = [];
+	for(var d2 = 0; d2 < 80; d2++){
+		if(Math.random() > .5){
+			a.push(1);
+		}else{
+			a.push(0);
+		}
+	}
+	
+	mapArray.push(a);
+}
+var hitmap = new HitMap(mapArray);
+var split = 10;
+function initRect(){
+	context.clearRect(0, 0, 800, 800);
+	context.beginPath();
+	for(var i = 0; i <= hitmap.getWidth(); i++){
 
-var rang = 2;
+		var x = split * i + 10.5
+		context.moveTo(x, 10.5);
+		context.lineTo(x, 790.5);
+	}
 
-var preColumn = target.x - rang;
-var nextColumn = target.x + rang;
-var preRow = target.y - rang;
-var nextRow = target.y + rang;
+	for(var i = 0; i <= hitmap.getHeight(); i++){
+		var y = split * i + 10.5
+		context.moveTo(10.5, y);
+		context.lineTo(790.5, y);
+	}
 
-var list = [];
+	context.stroke();
+	context.font = '10px Arial';
+	context.textBaseline = 'top';
 
+	for(var y = 0; y < hitmap.getHeight(); y++){
+		for(var x = 0; x < hitmap.getWidth(); x++){
+			var px = x * split + 10.5, py =  y * split + 10.5;
+			if(hitmap.get(x, y) === 1){
+				context.fillStyle = '#090';
+			}else{
+				context.fillStyle = '#fff';
+			}
+			context.fillRect(px + 1.5, py + 1.5, split - 3, split - 3);
+			context.fillStyle = '#000';
+			//context.fillText(x + ', ' + y, px + 1, py);
 
-for(var x = preColumn; x <= nextColumn; x++){
-	for(var y = preRow; y <= nextRow; y++){
-		var dx = Math.abs(x - target.x);
-		var dy = Math.abs(y - target.y);
-		
-		if(dx * dx + dy * dy <= rang * rang){
-			var n = new Vector(x, y);
-			
-			n.equal(target) || list.push(n);
 		}
 	}
 }
 
-console.log(list);
+initRect();
 
+document.getElementById('sence').onclick = function(e){
+	var canvasPos = util.getPosInDoc(document.getElementById('sence'));
+	var scroll = util.getScroll();
+	e.relX = e.clientX - canvasPos.left + scroll.left;
+	e.relY = e.clientY - canvasPos.top + scroll.top;
+	var px = ~~((e.relX - 10) / split);
+	var py = ~~((e.relY - 10) / split);
+	setPoints(px, py);
+};
+
+function setPoints(px, py){
+
+	var list = getRange(new Vector(px, py), 10);
+	for(var i = 0, len = list.length; i < len; i++){
+		var n = list[i];
+		var pixX = n.x * split + 10.5, pixY =  n.y * split + 10.5;
+		context.fillStyle = 'rgba(255, 0, 0, .2)';
+		context.fillRect(pixX + 1.5, pixY + 1.5, split - 3, split - 3);
+	}
+};
+
+function getRange(target, range){
+
+	var preColumn = target.x - range;
+	var nextColumn = target.x + range;
+	var preRow = target.y - range;
+	var nextRow = target.y + range;
+
+	var list = [];
+
+
+	for(var x = preColumn; x <= nextColumn; x++){
+		for(var y = preRow; y <= nextRow; y++){
+			var dx = Math.abs(x - target.x);
+			var dy = Math.abs(y - target.y);
+			
+			if(dx * dx + dy * dy <= range * range){
+				var n = new Vector(x, y);
+				
+				n.equal(target) || list.push(n);
+			}
+		}
+	}
+	return list;
+}
 </script>
 </body>
 </html>

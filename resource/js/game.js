@@ -25,10 +25,10 @@ var xml = util.parseXMLString(MainApp.resourceLoader.get('map1'));
 
 //var soldier = new Sprite(new Vector(160, 160), MainApp.resourceLoader.get('soldier'), Sprite.ANIM_TYPE.VERTICAL, 48, new Vector(0, 0));
 
-var leftHandler = new EntityObject(new Vector(0, 0), 20, 480, {fill: 'rgba(0, 0, 0, .5)'});
-var rightHandler = new EntityObject(new Vector(620, 0), 20, 480, {fill: 'rgba(0, 0, 0, .5)'});
-var topHandler = new EntityObject(new Vector(0, 0), 640, 20, {fill: 'rgba(0, 0, 0, .5)'});
-var bottomHandler = new EntityObject(new Vector(0, 460), 640, 20, {fill: 'rgba(0, 0, 0, .5)'});
+var leftHandler = new EntityObject(new Vector(0, 0), 20, 480, {fill: 'rgba(0, 0, 0, 0)'});
+var rightHandler = new EntityObject(new Vector(620, 0), 20, 480, {fill: 'rgba(0, 0, 0, 0)'});
+var topHandler = new EntityObject(new Vector(0, 0), 640, 20, {fill: 'rgba(0, 0, 0, 0)'});
+var bottomHandler = new EntityObject(new Vector(0, 460), 640, 20, {fill: 'rgba(0, 0, 0, 0)'});
 
 VIEWPORT_LOCK = {
 	LEFT: false,
@@ -37,7 +37,7 @@ VIEWPORT_LOCK = {
 	BOTTOM: false
 }
 MainApp.addEventListener(leftHandler, 'mouseover', function(e){
-	this.setStyles({fill: 'rgba(0, 0, 0, .8)'});
+	this.setStyles({fill: 'rgba(0, 0, 0, .2)'});
 	if(!VIEWPORT_LOCK.LEFT){
 		MainApp.viewport._move.speed.add(new Vector(150, 0));
 		MainApp.viewport._move.keep = true;
@@ -47,7 +47,7 @@ MainApp.addEventListener(leftHandler, 'mouseover', function(e){
 });
 
 MainApp.addEventListener(leftHandler, 'mouseout', function(e){
-	this.setStyles({fill: 'rgba(0, 0, 0, .5)'});
+	this.setStyles({fill: 'rgba(0, 0, 0, 0)'});
 	if(VIEWPORT_LOCK.LEFT){
 		MainApp.viewport._move.speed.remove(new Vector(150, 0));
 		MainApp.viewport._move.keep = false;
@@ -57,7 +57,7 @@ MainApp.addEventListener(leftHandler, 'mouseout', function(e){
 });
 
 MainApp.addEventListener(rightHandler, 'mouseover', function(e){
-	this.setStyles({fill: 'rgba(0, 0, 0, .8)'});
+	this.setStyles({fill: 'rgba(0, 0, 0, .2)'});
 	if(!VIEWPORT_LOCK.RIGHT){
 		MainApp.viewport._move.speed.add(new Vector(-150, 0));
 		MainApp.viewport._move.keep = true;
@@ -67,7 +67,7 @@ MainApp.addEventListener(rightHandler, 'mouseover', function(e){
 });
 
 MainApp.addEventListener(rightHandler, 'mouseout', function(e){
-	this.setStyles({fill: 'rgba(0, 0, 0, .5)'});
+	this.setStyles({fill: 'rgba(0, 0, 0, 0)'});
 	if(VIEWPORT_LOCK.RIGHT){
 		MainApp.viewport._move.speed.remove(new Vector(-150, 0));
 		MainApp.viewport._move.keep = false;
@@ -78,7 +78,7 @@ MainApp.addEventListener(rightHandler, 'mouseout', function(e){
 
 
 MainApp.addEventListener(topHandler, 'mouseover', function(e){
-	this.setStyles({fill: 'rgba(0, 0, 0, .8)'});
+	this.setStyles({fill: 'rgba(0, 0, 0, .2)'});
 	if(!VIEWPORT_LOCK.TOP){
 		MainApp.viewport._move.speed.add(new Vector(0, 150));
 		MainApp.viewport._move.keep = true;
@@ -88,7 +88,7 @@ MainApp.addEventListener(topHandler, 'mouseover', function(e){
 });
 
 MainApp.addEventListener(topHandler, 'mouseout', function(e){
-	this.setStyles({fill: 'rgba(0, 0, 0, .5)'});
+	this.setStyles({fill: 'rgba(0, 0, 0, 0)'});
 	if(VIEWPORT_LOCK.TOP){
 		MainApp.viewport._move.speed.remove(new Vector(0, 150));
 		MainApp.viewport._move.keep = false;
@@ -98,7 +98,7 @@ MainApp.addEventListener(topHandler, 'mouseout', function(e){
 });
 
 MainApp.addEventListener(bottomHandler, 'mouseover', function(e){
-	this.setStyles({fill: 'rgba(0, 0, 0, .8)'});
+	this.setStyles({fill: 'rgba(0, 0, 0, .2)'});
 	if(!VIEWPORT_LOCK.BOTTOM){
 		MainApp.viewport._move.speed.add(new Vector(0, -150));
 		MainApp.viewport._move.keep = true;
@@ -108,7 +108,7 @@ MainApp.addEventListener(bottomHandler, 'mouseover', function(e){
 });
 
 MainApp.addEventListener(bottomHandler, 'mouseout', function(e){
-	this.setStyles({fill: 'rgba(0, 0, 0, .5)'});
+	this.setStyles({fill: 'rgba(0, 0, 0, 0)'});
 	if(VIEWPORT_LOCK.BOTTOM){
 		MainApp.viewport._move.speed.remove(new Vector(0, -150));
 		MainApp.viewport._move.keep = false;

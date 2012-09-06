@@ -1,3 +1,4 @@
+/*
 var Animale = function(name){
 	this.name = name;
 
@@ -26,7 +27,7 @@ var Dog = function(name, food){
 };
 
 extend(Dog, Animale);
-
+*/
 var CursorPointerLayer = function(pos, name, widthCount, heightCount, tileWidth, tileHeight, tilesData){
 	this.name = name;
 	this.width = widthCount * tileWidth;
@@ -125,8 +126,8 @@ var CursorPointer = function(pos, width, height){
 
 extend(CursorPointer, EntityObject);
 
-var HitMap = function(pos, name, widthCount, heightCount, tileWidth, tileHeight, tilesData, tilesetMgr){
-	HitMap.parentConstructor.call(this, pos, widthCount * tileWidth, heightCount * tileHeight);
+var CollisionLayer = function(pos, name, widthCount, heightCount, tileWidth, tileHeight, tilesData, tilesetMgr){
+	CollisionLayer.parentConstructor.call(this, pos, widthCount * tileWidth, heightCount * tileHeight);
 	var mapArray = new Array(heightCount);
 	for(var i = 0, len = tilesData.length; i < len; i++){
 		var x = i % widthCount;
@@ -144,38 +145,14 @@ var HitMap = function(pos, name, widthCount, heightCount, tileWidth, tileHeight,
 		}
 	}
 	
-	this.getWidth = function(){
-		return widthCount;
-	};
+	this.hitmap = new PathFinder.HitMap(mapArray);
 	
-	this.getHeight = function(){
-		return heightCount;
-	};
-	
-	this.getPassable = function(x, y){
-		if(this.getReachable(x, y)){
-			return mapArray[y][x] !== 1;
-		}
-		return true;
-	};
-	
-	this.getReachable = function(x, y){
-		if(x >= 0 && y >= 0 && x < this.getWidth() && y < this.getHeight()){
-			return true;
-		}
-		
-		return false;
-	};
-
-	this.get = function(x, y){
-		return mapArray[y][x];
-	};
-	
-	this.set = function(x, y, value){
-		mapArray[y][x] = value;
-	};
+	this.getPath = function(startNode, endNode){
+		var astar = new PathFinder.AStar(this.hitmap, startNode, endNode);
+		return astar.getPath();
+	}
 	
 	this._draw = function(context){};
 };
 
-extend(HitMap, EntityObject);
+extend(CollisionLayer, EntityObject);

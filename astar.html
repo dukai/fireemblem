@@ -35,7 +35,7 @@ for(var d1 = 0; d1 < 80; d1++){
 }
 var pointsStatus = 2;
 var solidStatus = 0;
-var hitmap = new HitMap(mapArray);
+var hitmap = new PathFinder.HitMap(mapArray);
 var startNode = null;
 var endNode = null;
 
@@ -96,7 +96,7 @@ function setPoints(px, py){
 		alert('Can not set start point or end point at the solid area!');
 		return;
 	}
-	var node = new Node(px, py);
+	var node = new PathFinder.Node(px, py);
 	var pixX = px * split + 10.5, pixY =  py * split + 10.5;
 	if(pointsStatus == 2){
 		startNode = node;
@@ -126,7 +126,7 @@ function setSolidStatus(s){
 
 
 function eFindPath(){
-	var astar = new AStar(hitmap, startNode, endNode);
+	var astar = new PathFinder.AStar(hitmap, startNode, endNode);
 	var path = astar.getPath();
 	if(!path){
 		alert('Can not find path');

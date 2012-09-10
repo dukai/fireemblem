@@ -1,0 +1,10 @@
+../lib/oo.js
+../lib/util.js
+../lib/ajax.js
+../lib/astar.js
+../lib/json.js
+../lib/entities.js
+../lib/patch-enhancement.js
+../lib/tiled.js
+../lib/main_app.js
+../lib/screen-objects-pool.js

@@ -1,5 +1,5 @@
 MainApp.init();
-MainApp.startRun();
+MainApp.ScreenObjPool.init(MainApp.context);
 
 var gameResources = [
 	{'name': 'newworld', type: 'image', src: 'data/images/newworld.png'},

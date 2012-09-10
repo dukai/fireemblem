@@ -126,14 +126,17 @@ MainApp.addEventListener(MainApp.viewport, 'click', function(e){
 
 MainApp.addEventListener(MainApp.viewport, 'mousemove', function(e){});
 
-
-
+var FPS = new TextEntityObject('FPS:0', new Vector(10, 10), {fillStyle: '#900', font: 'normal 32px 微软雅黑', 'textBaseline': 'top'});
+FPS._update = function(){
+	this.setContent('FPS:' + ~~(1000 / MainApp.diffTime));
+}
 MainApp.ScreenObjPool.add(sence1Map);
 MainApp.ScreenObjPool.add(leftHandler);
 MainApp.ScreenObjPool.add(rightHandler);
 MainApp.ScreenObjPool.add(topHandler);
 MainApp.ScreenObjPool.add(bottomHandler);
 MainApp.ScreenObjPool.add(MainApp.viewport);
+MainApp.ScreenObjPool.add(FPS);
 };
 
 MainApp.resourceLoader.load(gameResources);

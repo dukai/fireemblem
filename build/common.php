@@ -34,6 +34,7 @@ function read_file($file){
 			$f = trim($f);
 			if( is_file($f)){
 				$s .= file_get_contents($f);
+				$s .= "\r\n";
 			}else if($f){
 				echo "$f<br>";
 			}

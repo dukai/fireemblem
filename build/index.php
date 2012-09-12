@@ -37,31 +37,31 @@ file_put_contents($tmp_script_file, $script);
 
 //定义输出文件
 $out_script_file = GAMEFRAMEWORK."/build/game-$source-$version.min.js";
-
+file_put_contents($out_script_file, $script);
 //构造压缩命令语句
-$cmd = "java -jar $compiler --js=$tmp_script_file --js_output_file=$out_script_file";
+//$cmd = "java -jar $compiler --js=$tmp_script_file --js_output_file=$out_script_file";
 //执行压缩命令
-exec($cmd, $output);
+//exec($cmd, $output);
 
 
 //读取压缩后的内容
-$script=file_get_contents($out_script_file);
+//$script=file_get_contents($out_script_file);
 if( empty($script) ){
 //如果没有内容则表示出错
-	echo $cmd;
-	print_r($output);
-	exit('error');
+	//echo $cmd;
+	//print_r($output);
+	//exit('error');
 }
 
 //添加copyright头后再写入到$out_script_file
-file_put_contents($out_script_file, $copyright.$script);
+//file_put_contents($out_script_file, $copyright.$script);
 
 //完毕
 echo 'OK.<br />';
 
 //如果compiler工具压缩过程有提示信息，则输出
 if(!empty($output)){
-	print_r($output);
+	//print_r($output);
 }
 
 //删除临时文件

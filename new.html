@@ -15,14 +15,32 @@
 <script>
 	MainApp.init();
 	
-	var box = new Display.DisplayObject(new Display.Vector(10.5, 10.5), 120, 120);
+	var box = new Display.DisplayObject(new Display.Vector(500, 0), 100, 100);
+	box.onUpdate = function(){
+		if(this.width < 400){
+			this.width++;
+			this.height++;
+		}
+		this.updateCache();
+	}
 	box.alpha = .5;
-	
-	var box2 = new Display.DisplayObject(new Display.Vector(30.5, 30.5), 120, 120);
+	var box2 = new Display.DisplayObject(new Display.Vector(30, 30), 40, 40);
+	box2.enableCache();
+	box2.onUpdate = function(){
+		if(this.width < 400){
+			this.width += 2;
+			this.height += 2;
+		}
+		
+	}
 	box2.alpha = .5;
 	
-	MainApp.ScreenObjPool.add(box);
-	MainApp.ScreenObjPool.add(box2);
+	var l = new Display.DisplayLayer();
+	
+	l.add(box);
+	l.add(box2);
+	
+	MainApp.ScreenObjPool.add(l);
 	
 </script>
 </body>

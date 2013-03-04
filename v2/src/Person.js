@@ -11,8 +11,8 @@ var Person = function(){
 	this.stamina;
 	this.staminaActual;
 	//攻击力
-	this.attack;
-	this.attackActual;
+	this.attackPower;
+	this.attackPowerActual;
 	//物理防御
 	this.physicalArmor;
 	this.physicalArmorActual;
@@ -58,6 +58,8 @@ var Person = function(){
 		//戒指
 		finger: null
 	};
+	//攻击
+	this.attack = function(){};
 };
 
 var Hero = function(){

@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Test - Person</title>
+	<script src="src/oo.js"></script>
+	<script src="src/person.js"></script>
+</head>
+<body>
+<script>
+function getI(){
+	return Math.random() > .5;
+};
+function go(xm, xj){
+	
+	var i = getI();
+	do{
+		if(i){
+			xm.attack(xj);
+		}else{
+			xj.attack(xm);
+		}
+		i = !i;
+	}while(xm.hitPointActual != 0 && xj.hitPointActual != 0);
+	
+	return xj.hitPointActual == 0;
+}
+var wizard = 0, knight = 0;
+/*
+for(var i = 0; i < 50000; i++){
+	var xm = new Wizard('小明', true);
+	var xj = new Infantry('小静', false);
+	if(go(xm, xj)){
+		wizard++;
+	}else{
+		knight++;
+	}
+}
+*/
+
+console.log(xm.units + ':' + wizard + ' | ' + xj.units + ':' + knight);
+</script>
+</body>
+</html>

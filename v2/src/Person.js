@@ -63,7 +63,7 @@ var Person = function(){
 };
 
 var Hero = function(){
-	this.parent.__constructor(this);
+	this.parent.__construct(this);
 	this.attack = 30;
 	this.physicalArmor = 20;
 	this.magicArmor = 10;

@@ -6,6 +6,8 @@
 var Person = function(name , gender){
 	this.name = name;
 	this.gender = gender;
+	//经验
+	this.exp = 0;
 	//等级
 	this.level = 1;
 	//生命值
@@ -50,26 +52,7 @@ var Person = function(name , gender){
 	//兵种
 	this.units;
 	
-	this.equipments = {
-		//头部
-		head: null,
-		//胸部
-		chest: null,
-		//腿部
-		leg: null,
-		//手部
-		hand: null,
-		//手腕
-		wrist: null,
-		//鞋子
-		foot: null,
-		//腰部
-		waist: null,
-		//饰品
-		adornment: null,
-		//戒指
-		finger: null
-	};
+	this.equipmentsManager = new EquipmentsManager(this);
 };
 
 Person.prototype = {
@@ -78,14 +61,14 @@ Person.prototype = {
 	 * @param {Person} otherPerson 攻击目标 
 	 */
 	attack : function(otherPerson){
-		console.log(this.units + this.name + '对' + otherPerson.units + otherPerson.name + '发动了攻击：');
+		debug && console.log(this.units + this.name + '对' + otherPerson.units + otherPerson.name + '发动了攻击：');
 		var damagePercent = 1;
 		var dodgeTurn = Math.ceil(Math.random() * 100);
 		var criticalStrikeTurn = Math.ceil(Math.random() * 100);
 		//是否暴击
 		if(criticalStrikeTurn <= this.criticalStrike * (1 + this.lucky) * 100){
 			damagePercent = this.criticalStrikeDamage;
-			console.log(this.units + this.name + '暴击了');
+			debug && console.log(this.units + this.name + '暴击了');
 		}
 		
 		var actualDamage = Math.ceil(((this.attackPower * damagePercent) - otherPerson.physicalArmor) * (((this.hitPoint - this.hitPointActual) / this.hitPoint) + 1));
@@ -96,16 +79,16 @@ Person.prototype = {
 		if(actualDamage < 0){
 			actualDamage = 1;
 		}
-		console.log('造成了' + actualDamage + '点伤害'); 
+		debug && console.log('造成了' + actualDamage + '点伤害'); 
 		
 		//计算伤害结果
 		otherPerson.hitPointActual -= actualDamage;
 		
 		if(otherPerson.hitPointActual <= 0){
-			console.log(otherPerson.units + otherPerson.name + '已经死亡');
+			debug && console.log(otherPerson.units + otherPerson.name + '已经死亡');
 			otherPerson.hitPointActual = 0;
 		}else{
-			console.log(otherPerson.name + '剩余生命值' + otherPerson.hitPointActual);
+			debug && console.log(otherPerson.name + '剩余生命值' + otherPerson.hitPointActual);
 		}
 		
 	},
@@ -114,7 +97,7 @@ Person.prototype = {
 	 * @param {Person} 治疗目标 
 	 */
 	heal: function(otherPerson){
-		console.log(this.name + '对' + otherPerson.name + '开始了治疗：');
+		debug && console.log(this.name + '对' + otherPerson.name + '开始了治疗：');
 		var healPercent = 1;
 		var criticalStrikeTurn = Math.ceil(Math.random() * 100);
 		//是否暴击
@@ -125,12 +108,16 @@ Person.prototype = {
 		var actualHeal = (this.healPower * healPercent);
 		otherPerson.hitPointActual += actualHeal;
 		if(otherPerson.hitPointActual >= otherPerson.hitPoint){
-			console.log('血量满');
+			debug && console.log('血量满');
 			otherPerson.hitPointActual = otherPerson.hitPoint;
 		}else{
-			console.log(this.name + '为' + otherPerson.name + '治疗了' + actualHeal + '点生命');			
+			debug && console.log(this.name + '为' + otherPerson.name + '治疗了' + actualHeal + '点生命');			
 		}
-		console.log(otherPerson.units + otherPerson.name + '当前生命为' + otherPerson.hitPointActual);
+		debug && console.log(otherPerson.units + otherPerson.name + '当前生命为' + otherPerson.hitPointActual);
+	},
+	
+	equip: function(type, equipment){
+		this.equipmentsManager.equip(type, equipment);
 	}
 	
 	

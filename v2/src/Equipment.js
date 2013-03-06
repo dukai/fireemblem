@@ -13,6 +13,8 @@ var Equipment = function(){
 	
 	this.propertyList = ['hitPoint', 'stamina', 'attackPower', 'healPower', 'physicalArmor', 'magicArmor', 'dodge', 'criticalStrike', 'lucky', 'mobility'];
 	
+	this.activePropertyList = [];
+	
 	this.level = 1;
 	this.type;
 };
@@ -46,20 +48,28 @@ var Helmet = function(){
 	this.parent.__construct(this);
 	this.type = Equipment.type.head;
 	this.hitPoint = 20;
+	this.activePropertyList.push('hitPoint');
 	
 }
 extend(Helmet, Equipment);
-/*
+/**
  * 胸甲类
  */
 var Cuirass = function(){
 	this.parent.__construct(this);
 	this.type = Equipment.type.chest;
 	this.physicalArmor = 10;
+	this.activePropertyList.push('physicalArmor');
 }
 extend(Cuirass, Equipment);
 
-
+var Glove = function(){
+	this.parent.__construct(this);
+	this.type = Equipment.type.finger;
+	this.physicalArmor = 5;
+	this.activePropertyList.push('physicalArmor');
+};
+extend(Glove, Equipment);
 
 /**
  *装备管理器
@@ -93,10 +103,11 @@ var EquipmentsManager = function(person){
 		weapon_sub: null
 	};
 	this.equipmentsList = [];
+	this.properties = {};
 	
 };
 EquipmentsManager.prototype = {
-	/*
+	/**
 	 * 装备一件装备
 	 * @param {Equipment.type} 装备类型
 	 * @param {Equipment} 装备
@@ -115,7 +126,7 @@ EquipmentsManager.prototype = {
 		this.equipmentsList.push(equipment);
 		debug && console.log('装备成功');
 	},
-	/*
+	/**
 	 * 根据类型获取装备
 	 * @param {Equipment.type} 类型
 	 */
@@ -123,6 +134,17 @@ EquipmentsManager.prototype = {
 		return this.equipments[type];
 	},
 	getAttributeCollection: function(){
-		
+		for(var i = 0, len = this.equipmentsList.length; i < len; i++){
+			var e = this.equipmentsList[i];
+			for(var pi in e.activePropertyList){
+				var pName = e.activePropertyList[pi];
+				if(this.properties[pName] !== undefined){
+					this.properties[pName] += e[pName];
+				}else{
+					this.properties[pName] = e[pName];
+				}
+			} 
+		}
+		return this.properties;
 	}
 };

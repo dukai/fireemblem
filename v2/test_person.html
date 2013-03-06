@@ -41,6 +41,12 @@ function test(){
 	
 	console.log(xm.units + ':' + wizard + ' | ' + xj.units + ':' + knight);
 }
+var dk = new Knight('dk', true);
+var em = new EquipmentsManager(dk);
+em.equip(Equipment.type.head, new Helmet());
+em.equip(Equipment.type.chest, new Cuirass());
+em.equip(Equipment.type.finger, new Glove());
+console.log(em.getAttributeCollection());
 
 </script>
 </body>

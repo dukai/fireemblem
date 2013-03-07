@@ -1,5 +1,10 @@
-//装备
+/**
+ *装备 
+ */
 var Equipment = function(){
+	
+	this.name;
+	
 	this.hitPoint = 0;
 	this.stamina = 0;
 	this.attackPower = 0;
@@ -10,35 +15,140 @@ var Equipment = function(){
 	this.criticalStrike = 0;
 	this.lucky = 0;
 	this.mobility = 0;
-	
+	/**
+	 *所有属性列表 
+	 */
 	this.propertyList = ['hitPoint', 'stamina', 'attackPower', 'healPower', 'physicalArmor', 'magicArmor', 'dodge', 'criticalStrike', 'lucky', 'mobility'];
-	
+	/**
+	 *激活的属性列表 
+	 */
 	this.activePropertyList = [];
-	
+	/**
+	 *装备等级 
+	 */
 	this.level = 1;
-	this.type;
+	/**
+	 *装备部位类型 
+	 */
+	this.type = null;
+	/**
+	 *装备护甲类型 
+	 */
+	this.armorType = null;
+	/**
+	 *装备武器类型 
+	 */
+	this.weaponType = null;
+	
 };
 
 Equipment.prototype = {
-	
+	initEquipmentProperty: function(data){
+		for(var name in data){
+			if(util.inArray(name, this.propertyList)){
+				this[name] = data[name];
+			}
+		}
+	}
 };
 /**
- *枚举，装备类型 
+ *装备部位类型，装备类型对应身体的装备部位
  */
 Equipment.type = {
+	/**
+	 * 头
+	 */
 	head: 'head',
+	/**
+	 *胸 
+	 */
 	chest: 'chest',
+	/**
+	 *腿 
+	 */
 	leg: 'leg',
+	/**
+	 *手 
+	 */
 	hand: 'hand',
+	/**
+	 *手腕 
+	 */
 	wrist: 'wrist',
+	/**
+	 *脚 
+	 */
 	foot: "foot",
+	/**
+	 *腰 
+	 */
 	waist: "waist",
-	adornmentLeft: "adornment_l",
-	adornmentRight: "adornment_r",
-	fingerLeft: "finger_l",
-	fingerRight: "finger_r",
+	/**
+	 *饰品 
+	 */
+	adornment: "adornment",
+	/**
+	 *手指
+	 */
+	finger: "finger",
+	/**
+	 *主武器 
+	 */
 	weaponMain: "weapon_main",
+	/**
+	 *副武器 
+	 */
 	weaponSub: "weapon_sub"
+};
+/**
+ *装备类型，皮甲 
+ */
+Equipment.armorType = {
+	/**
+	 *布甲 
+	 */
+	cloth : 0,
+	/**
+	 *皮甲 
+	 */
+	leather : 1,
+	/**
+	 *锁甲 
+	 */ 
+	chain : 2,
+	/**
+	 *板甲 
+	 */
+	plate : 3 
+};
+/**
+ *武器装备类型 
+ */
+Equipment.weaponType = {
+	/**
+	 *剑 
+	 */
+	sword: 0,
+	/**
+	 *枪 
+	 */
+	spear: 1,
+	/**
+	 *弓 
+	 */
+	bow: 2,
+	/**
+	 *法杖 
+	 */
+	staff: 3,
+	/**
+	 *刀斧 
+	 */
+	chopper: 4,
+	/**
+	 *书 
+	 */
+	book: 5
 };
 
 /**
@@ -62,7 +172,17 @@ var Cuirass = function(){
 	this.activePropertyList.push('physicalArmor');
 }
 extend(Cuirass, Equipment);
-
+/**
+ *腿甲 
+ */
+var LegGuard = function(){
+	this.parent.__construct(this);
+	this.type = Equipment.type.leg;
+};
+extend(LegGuard, Equipment);
+/**
+ *手套 
+ */
 var Glove = function(){
 	this.parent.__construct(this);
 	this.type = Equipment.type.finger;
@@ -70,6 +190,54 @@ var Glove = function(){
 	this.activePropertyList.push('physicalArmor');
 };
 extend(Glove, Equipment);
+/**
+ *护腕 
+ */
+var Armlet = function(){
+	this.parent.__construct(this);
+	this.type = Equipment.type.wrist;
+}
+extend(Armlet, Equipment);
+/**
+ *鞋子 
+ */
+var Boot = function(){
+	this.parent.__construct(this);
+	this.type = Equipment.type.foot;
+}
+extend(Boot, Equipment);
+/**
+ *腰带 
+ */
+var Belt = function(){
+	this.parent.__construct(this);
+	this.type = Equipment.type.waist;
+	
+}
+extend(Belt, Equipment);
+/**
+ *饰品 
+ */
+var Adornment = function(){
+	this.parent.__construct(this);
+	this.type = Equipment.type.adornment;
+}
+extend(Adornment, Equipment);
+/**
+ *指环 
+ */
+var Ring = function(){
+	this.parent.__construct(this);
+	this.type = Equipment.type.finger;
+}
+extend(Ring, Equipment);
+/**
+ *武器 
+ */
+var Weapon = function(){
+	this.parent.__construct(this);
+	this.type = Equipment.type.weaponMain;
+}
 
 /**
  *装备管理器
@@ -93,11 +261,9 @@ var EquipmentsManager = function(person){
 		//腰部
 		waist: null,
 		//饰品
-		adornment_l: null,
-		adornment_r: null,
+		adornment: [],
 		//戒指
-		finger_l: null,
-		finger_r: null,
+		finger: [],
 		//武器
 		weapon_main: null,
 		weapon_sub: null
@@ -106,13 +272,25 @@ var EquipmentsManager = function(person){
 	this.properties = {};
 	
 };
+
 EquipmentsManager.prototype = {
 	/**
 	 * 装备一件装备
 	 * @param {Equipment.type} 装备类型
 	 * @param {Equipment} 装备
+	 * @param {int, optional} 位置，指环和饰品
 	 */
-	equip: function(type, equipment){
+	equip: function(type, equipment, position){
+		
+		if(equipment.armorType && this.person.armorType != equipment.armorType){
+			debug && console.log('无法装备此种类型的护甲');
+			return;
+		}
+		
+		if(equipment.weaponType && this.person.weaponType != equipment.weaponType){
+			debug && console.log('无法装备此种类型的武器');
+			return;
+		}
 		
 		if(type != equipment.type){
 			debug && console.log('此处无法装备此类装备');
@@ -122,7 +300,16 @@ EquipmentsManager.prototype = {
 			debug && console.log('装备等级太高无法装备');
 			return;
 		}
-		this.equipments[type] = equipment;
+		if(position === undefined){
+			this.equipments[type] = equipment;
+		}else{
+			position = parseInt(position);
+			if(position > 1){
+				position = 0;
+			}
+			this.equipments[type][position] = equipment;
+		}
+		
 		this.equipmentsList.push(equipment);
 		debug && console.log('装备成功');
 	},
@@ -133,7 +320,10 @@ EquipmentsManager.prototype = {
 	getEquipment: function(type){
 		return this.equipments[type];
 	},
-	getAttributeCollection: function(){
+	/**
+	 *获取所有装备属性集合 
+	 */
+	getPropertyCollection: function(){
 		for(var i = 0, len = this.equipmentsList.length; i < len; i++){
 			var e = this.equipmentsList[i];
 			for(var pi in e.activePropertyList){

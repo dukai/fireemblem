@@ -43,12 +43,24 @@ var Equipment = function(){
 };
 
 Equipment.prototype = {
+	/**
+	 *初始化装备属性
+	 * @param {JSON} 装备属性集合 
+	 */
 	initEquipmentProperty: function(data){
 		for(var name in data){
 			if(util.inArray(name, this.propertyList)){
 				this[name] = data[name];
+				this.activePropertyList.push(name);
 			}
 		}
+	},
+	/**
+	 *设置装备名字
+	 * @param {String} name 
+	 */
+	setName : function(name){
+		this.name = name;
 	}
 };
 /**
@@ -101,7 +113,7 @@ Equipment.type = {
 	weaponSub: "weapon_sub"
 };
 /**
- *装备类型，皮甲 
+ *护甲装备类型
  */
 Equipment.armorType = {
 	/**
@@ -156,17 +168,58 @@ Equipment.weaponType = {
  */
 var Helmet = function(){
 	Helmet.parent.__construct(this);
+	this.name = "头盔";
 	this.type = Equipment.type.head;
-	this.hitPoint = 20;
 	this.activePropertyList.push('hitPoint');
 	
 }
 extend(Helmet, Equipment);
+
+var ClothHelmet = function(){
+	ClothHelmet.parent.__construct(this);
+	
+	this.name = "布甲头盔";
+	this.armorType = Equipment.armorType.cloth;
+	this.hitPoint = 10;
+}
+extend(ClothHelmet, Helmet);
+
+var LeatherHelmet = function(){
+	LeatherHelmet.parent.__construct(this);
+	
+	this.name = "皮甲头盔";
+	this.armorType = Equipment.armorType.leather;
+	this.hitPoint = 10;
+}
+extend(LeatherHelmet, Helmet);
+
+var ChainHelmet = function(){
+	ChainHelmet.parent.__construct(this);
+	
+	this.name = "锁甲头盔";
+	this.armorType = Equipment.armorType.chain;
+	this.hitPoint = 10;
+}
+extend(ChainHelmet, Helmet);
+
+var PlateHelmet = function(){
+	PlateHelmet.parent.__construct(this);
+	
+	this.name = "板甲头盔";
+	this.armorType = Equipment.armorType.plate;
+	this.hitPoint = 10;
+}
+extend(PlateHelmet, Helmet);
+
+
+
 /**
  * 胸甲类
  */
 var Cuirass = function(){
 	Cuirass.parent.__construct(this);
+	
+	this.name = "胸甲"
 	this.type = Equipment.type.chest;
 	this.physicalArmor = 10;
 	this.activePropertyList.push('physicalArmor');
@@ -177,6 +230,8 @@ extend(Cuirass, Equipment);
  */
 var LegGuard = function(){
 	LegGuard.parent.__construct(this);
+	
+	this.name = "腿甲"
 	this.type = Equipment.type.leg;
 };
 extend(LegGuard, Equipment);
@@ -185,6 +240,8 @@ extend(LegGuard, Equipment);
  */
 var Glove = function(){
 	Glove.parent.__construct(this);
+	
+	this.name = "手套";
 	this.type = Equipment.type.finger;
 	this.physicalArmor = 5;
 	this.activePropertyList.push('physicalArmor');
@@ -195,6 +252,8 @@ extend(Glove, Equipment);
  */
 var Armlet = function(){
 	Armlet.parent.__construct(this);
+	
+	this.name = "护腕";
 	this.type = Equipment.type.wrist;
 }
 extend(Armlet, Equipment);
@@ -203,6 +262,8 @@ extend(Armlet, Equipment);
  */
 var Boot = function(){
 	Boot.parent.__construct(this);
+	
+	this.name = "鞋子";
 	this.type = Equipment.type.foot;
 }
 extend(Boot, Equipment);
@@ -211,6 +272,8 @@ extend(Boot, Equipment);
  */
 var Belt = function(){
 	Belt.parent.__construct(this);
+	
+	this.name = "腰带";
 	this.type = Equipment.type.waist;
 	
 }
@@ -220,6 +283,8 @@ extend(Belt, Equipment);
  */
 var Adornment = function(){
 	Adornment.parent.__construct(this);
+	
+	this.name = "饰品";
 	this.type = Equipment.type.adornment;
 }
 extend(Adornment, Equipment);
@@ -228,6 +293,8 @@ extend(Adornment, Equipment);
  */
 var Ring = function(){
 	Ring.parent.__construct(this);
+	
+	this.name = "指环";
 	this.type = Equipment.type.finger;
 }
 extend(Ring, Equipment);
@@ -245,6 +312,8 @@ extend(Weapon, Equipment);
  */
 var Sword = function(){
 	Sword.parent.__construct(this);
+	
+	this.name = "剑";
 	this.weaponType = Equipment.weaponType.sword;
 	this.attackPower = 10;
 }
@@ -254,6 +323,8 @@ extend(Sword, Weapon);
  */
 var Spear = function(){
 	Spear.parent.__construct(this);
+	
+	this.name = "长枪";
 	this.weaponType = Equipment.weaponType.spear;
 	this.attackPower = 10;
 }
@@ -302,26 +373,26 @@ EquipmentsManager.prototype = {
 	 */
 	equip: function(type, equipment, position){
 		if(equipment.armorType === null && equipment.weaponType === null){
-			debug && console.log("装备失败：未知类型的装备");
+			debug && console.log(equipment.name + "装备失败：未知类型的装备");
 			return;
 		}
 		if(equipment.armorType !== null && this.person.armorType != equipment.armorType){
-			debug && console.log('装备失败：无法装备此种类型的护甲');
+			debug && console.log(equipment.name + '装备失败：无法装备此种类型的护甲');
 			return;
 		}
 		
 		if(equipment.weaponType !== null && this.person.weaponType != equipment.weaponType){
-			debug && console.log('装备失败：无法装备此种类型的武器');
+			debug && console.log(equipment.name + '装备失败：无法装备此种类型的武器');
 			return;
 		}
 		
 		
 		if(type != equipment.type){
-			debug && console.log('装备失败：此处无法装备此类装备');
+			debug && console.log(equipment.name + '装备失败：此处无法装备此类装备');
 			return;
 		}
 		if(equipment.level > this.person.level){
-			debug && console.log('装备失败：装备等级太高无法装备');
+			debug && console.log(equipment.name + '装备失败：装备等级太高无法装备');
 			return;
 		}
 		if(position === undefined){
@@ -335,7 +406,7 @@ EquipmentsManager.prototype = {
 		}
 		
 		this.equipmentsList.push(equipment);
-		debug && console.log('装备成功');
+		debug && console.log(equipment.name + '装备成功');
 	},
 	/**
 	 * 根据类型获取装备

@@ -9,7 +9,7 @@
 </head>
 <body>
 <script>
-debug = false;
+debug = true;
 function getI(){
 	return Math.random() > .5;
 };
@@ -42,11 +42,16 @@ function test(){
 	console.log(xm.units + ':' + wizard + ' | ' + xj.units + ':' + knight);
 }
 var dk = new Knight('dk', true);
-var em = new EquipmentsManager(dk);
-em.equip(Equipment.type.head, new Helmet());
-em.equip(Equipment.type.chest, new Cuirass());
-em.equip(Equipment.type.finger, new Glove());
-console.log(em.getAttributeCollection());
+
+dk.equip(Equipment.type.head, new ClothHelmet());
+dk.equip(Equipment.type.head, new LeatherHelmet());
+dk.equip(Equipment.type.head, new ChainHelmet());
+dk.equip(Equipment.type.head, new PlateHelmet());
+dk.equip(Equipment.type.chest, new Cuirass());
+dk.equip(Equipment.type.finger, new Glove());
+dk.equip(Equipment.type.weaponMain, new Sword());
+dk.equip(Equipment.type.weaponMain, new Spear());
+console.log(dk.equipmentsManager.getPropertyCollection());
 
 </script>
 </body>

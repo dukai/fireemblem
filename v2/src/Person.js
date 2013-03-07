@@ -51,6 +51,14 @@ var Person = function(name , gender){
 	this.consume;
 	//兵种
 	this.units;
+	/**
+	 *防御装备类型 
+	 */
+	this.armorType;
+	/**
+	 *武器装备类型 
+	 */
+	this.weaponType;
 	
 	this.equipmentsManager = new EquipmentsManager(this);
 };
@@ -130,7 +138,9 @@ Person.prototype = {
  */
 var Hero = function(name, gender){
 	this.parent.__construct(this, [name, gender]);
-	
+	//设置装备类型
+	this.armorType = Equipment.armorType.chain;
+	this.weaponType = Equipment.weaponType.sword;
 	this.units = '领袖';
 	this.hitPointActual = this.hitPoint = 480;
 	this.attackPower = 50;
@@ -152,7 +162,9 @@ extend(Hero, Person);
  */
 var Knight = function(name, gender){
 	this.parent.__construct(this, [name, gender]);
-	
+	//设置装备类型
+	this.armorType = Equipment.armorType.plate;
+	this.weaponType = Equipment.weaponType.spear;
 	this.units = '骑士';
 	this.hitPointActual = this.hitPoint = 520;
 	this.attackPower = 55;
@@ -174,7 +186,9 @@ extend(Knight, Person);
  */
 var Archer = function(name, gender){
 	this.parent.__construct(this, [name, gender]);
-	
+	//设置装备类型
+	this.armorType = Equipment.armorType.leather;
+	this.weaponType = Equipment.weaponType.bow;
 	this.units = '弓箭手';
 	this.hitPointActual = this.hitPoint = 450;
 	this.attackPower = 60;
@@ -195,7 +209,9 @@ extend(Archer, Person);
  */
 var Wizard = function(name, gender){
 	this.parent.__construct(this, [name, gender]);
-	
+	//设置装备类型
+	this.armorType = Equipment.armorType.cloth;
+	this.weaponType = Equipment.weaponType.staff;
 	this.units = '法师';
 	this.hitPointActual = this.hitPoint = 320;
 	this.attackPower = 90;
@@ -216,7 +232,9 @@ extend(Wizard, Person);
  */
 var Infantry = function(name, gender){
 	this.parent.__construct(this, [name, gender]);
-	
+	//设置装备类型
+	this.armorType = Equipment.armorType.plate;
+	this.weaponType = Equipment.weaponType.chopper;
 	this.units = '步兵';
 	this.hitPointActual = this.hitPoint = 620;
 	this.attackPower = 40;
@@ -238,7 +256,9 @@ extend(Infantry, Person);
  */
 var Pastor = function(name, gender){
 	this.parent.__construct(this, [name, gender]);
-	
+	//设置装备类型
+	this.armorType = Equipment.armorType.cloth;
+	this.weaponType = Equipment.weaponType.book;
 	this.units = '牧师';
 	this.hitPointActual = this.hitPoint = 430;
 	this.attackPower = 10;

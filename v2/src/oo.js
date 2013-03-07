@@ -4,7 +4,7 @@
  * @param baseClass
  */
 var extend = function(subClass, baseClass){
-	var parent = subClass.prototype.parent = {
+	var parent = subClass.parent = {
 		'__construct': function(obj, args){
 			baseClass.apply(obj, args);
 		}

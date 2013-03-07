@@ -137,7 +137,7 @@ Person.prototype = {
  * @param {bool} gender 英雄性别，true为男，false为女
  */
 var Hero = function(name, gender){
-	this.parent.__construct(this, [name, gender]);
+	Hero.parent.__construct(this, [name, gender]);
 	//设置装备类型
 	this.armorType = Equipment.armorType.chain;
 	this.weaponType = Equipment.weaponType.sword;
@@ -161,7 +161,7 @@ extend(Hero, Person);
  * @param {bool} gender 英雄性别，true为男，false为女
  */
 var Knight = function(name, gender){
-	this.parent.__construct(this, [name, gender]);
+	Knight.parent.__construct(this, [name, gender]);
 	//设置装备类型
 	this.armorType = Equipment.armorType.plate;
 	this.weaponType = Equipment.weaponType.spear;
@@ -185,7 +185,7 @@ extend(Knight, Person);
  * @param {Object} gender
  */
 var Archer = function(name, gender){
-	this.parent.__construct(this, [name, gender]);
+	Archer.parent.__construct(this, [name, gender]);
 	//设置装备类型
 	this.armorType = Equipment.armorType.leather;
 	this.weaponType = Equipment.weaponType.bow;
@@ -208,7 +208,7 @@ extend(Archer, Person);
  * @param {Object} gender
  */
 var Wizard = function(name, gender){
-	this.parent.__construct(this, [name, gender]);
+	Wizard.parent.__construct(this, [name, gender]);
 	//设置装备类型
 	this.armorType = Equipment.armorType.cloth;
 	this.weaponType = Equipment.weaponType.staff;
@@ -231,7 +231,7 @@ extend(Wizard, Person);
  * @param {Object} gender
  */
 var Infantry = function(name, gender){
-	this.parent.__construct(this, [name, gender]);
+	Infantry.parent.__construct(this, [name, gender]);
 	//设置装备类型
 	this.armorType = Equipment.armorType.plate;
 	this.weaponType = Equipment.weaponType.chopper;
@@ -255,7 +255,7 @@ extend(Infantry, Person);
  * @param {Object} gender
  */
 var Pastor = function(name, gender){
-	this.parent.__construct(this, [name, gender]);
+	Pastor.parent.__construct(this, [name, gender]);
 	//设置装备类型
 	this.armorType = Equipment.armorType.cloth;
 	this.weaponType = Equipment.weaponType.book;

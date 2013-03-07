@@ -20,5 +20,22 @@ var util = {
 		}
 
 		return false;
+	},
+	
+	arrayIndex: function(value, array){
+		for (var i = 0, len = array.length; i < len; i++) {
+			if (array[i] == value) {
+				return i;
+			}
+		}
+
+		return false;
+	},
+	
+	removeByValue: function(value, array){
+		var index = this.arrayIndex(value, array);
+		array.splice(index, 1);
 	}
+	
+	
 };

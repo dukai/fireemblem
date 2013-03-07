@@ -352,9 +352,9 @@ var EquipmentsManager = function(person){
 		//腰部
 		waist: null,
 		//饰品
-		adornment: [],
+		adornment: [null, null],
 		//戒指
-		finger: [],
+		finger: [null, null],
 		//武器
 		weapon_main: null,
 		weapon_sub: null
@@ -376,7 +376,7 @@ EquipmentsManager.prototype = {
 			debug && console.log(equipment.name + "装备失败：未知类型的装备");
 			return;
 		}
-		if(equipment.armorType !== null && this.person.armorType != equipment.armorType){
+		if(equipment.armorType !== null && this.person.armorType < equipment.armorType){
 			debug && console.log(equipment.name + '装备失败：无法装备此种类型的护甲');
 			return;
 		}
@@ -396,13 +396,18 @@ EquipmentsManager.prototype = {
 			return;
 		}
 		if(position === undefined){
+			var e = this.equipments[type];
 			this.equipments[type] = equipment;
 		}else{
 			position = parseInt(position);
 			if(position > 1){
 				position = 0;
 			}
+			var e = this.equipments[type][position];
 			this.equipments[type][position] = equipment;
+		}
+		if(e !== null && this.equipmentsList.length > 0){
+			util.removeByValue(e, this.equipmentsList);
 		}
 		
 		this.equipmentsList.push(equipment);

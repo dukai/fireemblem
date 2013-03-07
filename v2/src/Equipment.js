@@ -238,6 +238,18 @@ var Weapon = function(){
 	this.parent.__construct(this);
 	this.type = Equipment.type.weaponMain;
 }
+extend(Weapon, Equipment);
+/**
+ *剑 
+ */
+var Sword = function(){
+	this.parent.__construct(this);
+	this.weaponType = Equipment.weaponType.sword;
+	this.attackPower = 10;
+	this.activePropertyList.push('attackPower');
+}
+extend(Sword, Weapon);
+
 
 /**
  *装备管理器

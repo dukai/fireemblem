@@ -10,6 +10,7 @@
 </head>
 <body>
 <input type="button" onclick="console.log(new Hero());" value="创建一个剑士" />
+<input type="button" onclick="attackUser();" value="攻击" />
 <script>
 debug = true;
 function getI(){
@@ -54,6 +55,14 @@ dk.equip(Equipment.type.finger, new Glove());
 dk.equip(Equipment.type.weaponMain, new Sword());
 dk.equip(Equipment.type.weaponMain, new Spear());
 console.log(dk.equipmentsManager.getPropertyCollection());
+
+function attackUser(){
+	var t = new Wizard();
+	
+	do{
+		dk.attack(t);
+	}while(t.hitPointActual > 0);
+}
 
 </script>
 </body>

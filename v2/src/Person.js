@@ -54,9 +54,11 @@ Experience.prototype = {
 		}
 		
 		this.currentLevelExp += exp;
-		if(this.currentLevelExp > this.levelExp){
-			this.level++;
+		if(this.currentLevelExp >= this.levelExp){
 			this.currentLevelExp -= this.levelExp;
+			
+			this.level++;
+			this.getLevelExp(this.level, true);
 			return true;
 		}
 		

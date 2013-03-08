@@ -4,12 +4,22 @@
  * @param {bool} 性别，男性为true， 女性为false
  */
 var Person = function(name , gender){
-	this.name = name;
+	if(gender == undefined){
+		gender = true;
+	}
+	if(name){
+		this.name = name;
+	}else{
+		this.name = util.getName(gender);
+	}
+	
 	this.gender = gender;
-	//经验
-	this.exp = 0;
 	//等级
 	this.level = 1;
+	//经验
+	this.exp = new Experience();
+	this.exp.getLevelExp(this.level, true);
+	
 	//生命值
 	this.hitPoint = 0;
 	this.hitPointActual;
@@ -95,6 +105,8 @@ Person.prototype = {
 		if(otherPerson.hitPointActual <= 0){
 			debug && console.log(otherPerson.units + otherPerson.name + '已经死亡');
 			otherPerson.hitPointActual = 0;
+			
+			var gains = this.exp.getFightExp(this.level, otherPerson.level);
 		}else{
 			debug && console.log(otherPerson.name + '剩余生命值' + otherPerson.hitPointActual);
 		}
@@ -123,11 +135,12 @@ Person.prototype = {
 		}
 		debug && console.log(otherPerson.units + otherPerson.name + '当前生命为' + otherPerson.hitPointActual);
 	},
-	
-	equip: function(type, equipment){
-		this.equipmentsManager.equip(type, equipment);
+	/**
+	 *装备武器 
+	 */
+	equip: function(type, equipment, position){
+		this.equipmentsManager.equip(type, equipment, position);
 	}
-	
 	
 	
 };
@@ -272,3 +285,53 @@ var Pastor = function(name, gender){
 	this.attackRange = {min: 1, max: 2};
 }
 extend(Pastor, Person);
+/**
+ *经验管理器 
+ */
+var Experience = function(){
+	this.levelExpList = [];
+	this.levelExp = -1;
+	this.currentLevelExp = 0;
+	this.level = -1;
+};
+
+Experience.prototype = {
+	/**
+	 *经验计算偏移量 
+	 */
+	expOffset: 40,
+	/**
+	 *根据等级获取当前等级升级需要的总经验 
+	 * @param {Int} 等级
+	 * @param {bool} 是否设为当前等级
+	 * @param {bool} 是否加入到经验列表
+	 */
+	getLevelExp: function(level, currentLevel, addToList){
+		var totalExp = Math.ceil((Math.pow(level - 1,3) + diff ) / 10 * ((level  - 1) * 2 + this.expOffset));
+		if(currentLevel){
+			this.level = currentLevel;
+			this.levelExp = totalExp;
+		}
+		if(addToList){
+			this.levelExpList[level] = totalExp;
+		}
+		
+		return totalExp;
+	},
+	/**
+	 *获取战斗经验 
+	 * @param {Int} 攻击者等级
+	 * @param {Int} 被攻击者等级
+	 */
+	getFightExp: function(positiveLevel, negativeLevel){
+		var t = Math.pow((positiveLevel - 1) , 2);
+		return Math.ceil(t + (this.expOffset / 2) + (t * (negativeLevel - positiveLevel) / 40));
+	},
+	/**
+	 *是否为当前等级 
+ 	 * @param {Int} level
+	 */
+	isCurrentLevel: function(level){
+		return level === this.level;
+	}
+};

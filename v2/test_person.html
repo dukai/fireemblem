@@ -58,6 +58,7 @@ console.log(dk.equipmentsManager.getPropertyCollection());
 
 function attackUser(){
 	var t = new Wizard();
+	t.level = util.rand(1, 20);
 	
 	do{
 		dk.attack(t);

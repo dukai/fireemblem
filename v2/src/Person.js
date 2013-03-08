@@ -37,8 +37,16 @@ Experience.prototype = {
 	 * @param {Int} 被攻击者等级
 	 */
 	getFightExp: function(positiveLevel, negativeLevel){
+		var diff = negativeLevel - positiveLevel;
+		if(diff > 5){
+			diff = 5;
+		}
+		
+		if(diff < -5){
+			return 0;
+		}
 		var t = Math.pow((positiveLevel - 1) , 2);
-		return Math.ceil(t + (this.expOffset / 2) + (t * (negativeLevel - positiveLevel) / 40));
+		return Math.ceil(t + (this.expOffset / 2) + (t * diff / 40));
 	},
 	/**
 	 *是否为当前等级 

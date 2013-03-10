@@ -189,7 +189,7 @@ var LeatherHelmet = function(){
 	
 	this.name = "皮甲头盔";
 	this.armorType = Equipment.armorType.leather;
-	this.hitPoint = 10;
+	this.hitPoint = 15;
 }
 extend(LeatherHelmet, Helmet);
 
@@ -198,7 +198,7 @@ var ChainHelmet = function(){
 	
 	this.name = "锁甲头盔";
 	this.armorType = Equipment.armorType.chain;
-	this.hitPoint = 10;
+	this.hitPoint = 20;
 }
 extend(ChainHelmet, Helmet);
 
@@ -207,7 +207,7 @@ var PlateHelmet = function(){
 	
 	this.name = "板甲头盔";
 	this.armorType = Equipment.armorType.plate;
-	this.hitPoint = 10;
+	this.hitPoint = 25;
 }
 extend(PlateHelmet, Helmet);
 
@@ -226,6 +226,52 @@ var Cuirass = function(){
 }
 extend(Cuirass, Equipment);
 /**
+ *布甲胸甲
+ */
+var ClothCuirass = function(){
+	ClothCuirass.parent.__construct(this);
+	
+	this.name = "布甲胸甲";
+	this.armorType = Equipment.armorType.cloth;
+	this.hitPoint = 10;
+};
+extend(ClothCuirass, Cuirass);
+
+/**
+ *皮甲胸甲
+ */
+var LeatherCuirass = function(){
+	LeatherCuirass.parent.__construct(this);
+	
+	this.name = "皮甲胸甲";
+	this.armorType = Equipment.armorType.leather;
+	this.hitPoint = 15;
+};
+extend(LeatherCuirass, Cuirass);
+
+/**
+ *锁甲胸甲
+ */
+var ChainCuirass = function(){
+	ChainCuirass.parent.__construct(this);
+	
+	this.name = "锁甲胸甲";
+	this.armorType = Equipment.armorType.chain;
+	this.hitPoint = 20;
+};
+extend(ChainCuirass, Cuirass);
+
+var PlateCuirass = function(){
+	PlateCuirass.parent.__construct(this);
+	
+	this.name = "板甲胸甲";
+	this.armorType = Equipment.armorType.plate;
+	this.hitPoint = 25;
+};
+extend(PlateCuirass, Cuirass);
+
+
+/**
  *腿甲 
  */
 var LegGuard = function(){
@@ -235,6 +281,35 @@ var LegGuard = function(){
 	this.type = Equipment.type.leg;
 };
 extend(LegGuard, Equipment);
+var ClothLegGuard = function(){
+	ClothLegGuard.parent.__construct(this);
+	
+	this.name = "布甲腿甲";
+	this.armorType = Equipment.armorType.cloth;
+	this.hitPoint = 10;
+};
+extend(ClothLegGuard, LegGuard);
+var LeatherLegGuard = function(){
+	LeatherLegGuard.parent.__construct(this);
+	this.name = "皮甲腿甲";
+	this.armorType = Equipment.armorType.leather;
+	this.hitPoint = 15;
+};
+extend(LeatherLegGuard, LegGuard);
+var ChainLegGuard = function(){
+	ChianLegGuard.parent.__construct(this);
+	this.name = "锁甲腿甲";
+	this.armorType = Equipment.armorType.chain;
+	this.hitPoint = 20;
+};
+extend(ChainLegGuard, LegGuard);
+var PlateLegGuard = function(){
+	PlateLegGuard.parent.__construct(this);
+	this.name = "板甲腿甲";
+	this.armorType = Equipment.armorType.plate;
+	this.hitPoint = 25;
+}
+extend(PlateLegGuard, LegGuard);
 /**
  *手套 
  */
@@ -242,11 +317,39 @@ var Glove = function(){
 	Glove.parent.__construct(this);
 	
 	this.name = "手套";
-	this.type = Equipment.type.finger;
+	this.type = Equipment.type.hand;
 	this.physicalArmor = 5;
 	this.activePropertyList.push('physicalArmor');
 };
 extend(Glove, Equipment);
+var ClothGlove = function(){
+	ClothGlove.parent.__construct(this);
+	this.name = "布甲手套";
+	this.armorType = Equipment.armorType.cloth;
+	this.hitPoint = 10;
+};
+extend(ClothGlove, Glove);
+var LeatherGlove = function(){
+	LeatherGlove.parent.__construct(this);
+	this.name = "皮甲手套";
+	this.armorType = Equipment.armorType.leather;
+	this.hitPoint = 15;
+};
+extend(LeatherGlove, Glove);
+var ChainGlove = function(){
+	ChainGlove.parent.__construct(this);
+	this.name = "锁甲手套";
+	this.armorType = Equipment.armorType.chain;
+	this.hitPoint = 20;
+};
+extend(ChainGlove, Glove);
+var PlateGlove = function(){
+	PlateGlove.parent.__construct(this);
+	this.name = "板甲手套";
+	this.armorType = Equipment.armorType.plate;
+	this.hitPoint = 25;
+};
+extend(PlateGlove, Glove);
 /**
  *护腕 
  */
@@ -352,9 +455,9 @@ var EquipmentsManager = function(person){
 		//腰部
 		waist: null,
 		//饰品
-		adornment: [null, null],
+		adornment: [],
 		//戒指
-		finger: [null, null],
+		finger: [],
 		//武器
 		weapon_main: null,
 		weapon_sub: null
@@ -372,7 +475,7 @@ EquipmentsManager.prototype = {
 	 * @param {int, optional} 位置，指环和饰品
 	 */
 	equip: function(type, equipment, position){
-		if(equipment.armorType === null && equipment.weaponType === null){
+		if(equipment.armorType === null && equipment.weaponType === null && (equipment.type !== Equipment.type.finger && equipment.type !== Equipment.type.adornment)){
 			debug && console.log(equipment.name + "装备失败：未知类型的装备");
 			return;
 		}
@@ -394,6 +497,13 @@ EquipmentsManager.prototype = {
 		if(equipment.level > this.person.level){
 			debug && console.log(equipment.name + '装备失败：装备等级太高无法装备');
 			return;
+		}
+		if(this.equipments[type] instanceof Array){
+			if(this.equipments[type].length > 0){
+				position = 1;
+			}else{
+				position = 0;
+			}
 		}
 		if(position === undefined){
 			var e = this.equipments[type];

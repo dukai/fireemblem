@@ -46,12 +46,12 @@ function test(){
 }
 var dk = new Knight('dk', true);
 
-dk.equip(Equipment.type.head, new ClothHelmet());
-dk.equip(Equipment.type.head, new LeatherHelmet());
-dk.equip(Equipment.type.head, new ChainHelmet());
+//dk.equip(Equipment.type.head, new ClothHelmet());
+//dk.equip(Equipment.type.head, new LeatherHelmet());
+//dk.equip(Equipment.type.head, new ChainHelmet());
 dk.equip(Equipment.type.head, new PlateHelmet());
-dk.equip(Equipment.type.chest, new Cuirass());
-dk.equip(Equipment.type.finger, new Glove());
+dk.equip(Equipment.type.chest, new PlateCuirass());
+dk.equip(Equipment.type.hand, new PlateGlove());
 dk.equip(Equipment.type.weaponMain, new Sword());
 dk.equip(Equipment.type.weaponMain, new Spear());
 console.log(dk.equipmentsManager.getPropertyCollection());

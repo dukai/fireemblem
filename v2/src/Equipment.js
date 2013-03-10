@@ -223,6 +223,7 @@ var Cuirass = function(){
 	this.type = Equipment.type.chest;
 	this.physicalArmor = 10;
 	this.activePropertyList.push('physicalArmor');
+	this.activePropertyList.push('hitPoint');
 }
 extend(Cuirass, Equipment);
 /**
@@ -279,6 +280,7 @@ var LegGuard = function(){
 	
 	this.name = "腿甲"
 	this.type = Equipment.type.leg;
+	this.activePropertyList.push('physicalArmor');
 };
 extend(LegGuard, Equipment);
 var ClothLegGuard = function(){
@@ -320,6 +322,7 @@ var Glove = function(){
 	this.type = Equipment.type.hand;
 	this.physicalArmor = 5;
 	this.activePropertyList.push('physicalArmor');
+	this.activePropertyList.push('hitPoint');
 };
 extend(Glove, Equipment);
 var ClothGlove = function(){
@@ -358,8 +361,39 @@ var Armlet = function(){
 	
 	this.name = "护腕";
 	this.type = Equipment.type.wrist;
+	this.activePropertyList.push('physicalArmor');
 }
 extend(Armlet, Equipment);
+var ClothArmlet = function(){
+	ClothArmlet.parent.__construct(this);
+	this.name = "布甲护腕";
+	this.armorType = Equipment.armorType.cloth;
+	this.hipPoint = 10;
+};
+extend(ClothArmlet, Armlet);
+var LeatherArmlet = function(){
+	LeatherArmlet.parent.__construct(this);
+	this.name = "皮甲护腕";
+	this.armorType = Equipment.armorType.leather;
+	this.hipPoint = 15;
+};
+extend(LeatherArmlet, Armlet);
+var ChainArmlet = function(){
+	ChainArmlet.parent.__construct(this);
+	this.name = "锁甲护腕";
+	this.armorType = Equipment.armorType.chain;
+	this.hipPoint = 20;
+};
+extend(ChainArmlet, Armlet);
+var PlateArmlet = function(){
+	PlateArmlet.parent.__construct(this);
+	this.name = "板甲护腕";
+	this.armorType = Equipment.armorType.plate;
+	this.hipPoint = 25;
+};
+extend(PlateArmlet, Armlet);
+
+
 /**
  *鞋子 
  */
@@ -368,8 +402,43 @@ var Boot = function(){
 	
 	this.name = "鞋子";
 	this.type = Equipment.type.foot;
+	this.activePropertyList.push('physicalArmor');
 }
 extend(Boot, Equipment);
+var ClothBoot = function(){
+	ClothBoot.parent.__construct(this);
+	
+	this.name = "布甲鞋子";
+	this.armorType = Equipment.armorType.cloth;
+	this.hitPoint = 10;
+};
+extend(ClothBoot, Boot);
+
+var LeatherhBoot = function(){
+	LeatherhBoot.parent.__construct(this);
+	
+	this.name = "皮甲鞋子";
+	this.armorType = Equipment.armorType.leather;
+	this.hitPoint = 15;
+};
+extend(LeatherhBoot, Boot);
+
+var ChainhBoot = function(){
+	ChainhBoot.parent.__construct(this);
+	
+	this.name = "锁甲鞋子";
+	this.armorType = Equipment.armorType.chain;
+	this.hitPoint = 20;
+};
+extend(ChainhBoot, Boot);
+var PlateBoot = function(){
+	PlateBoot.parent.__construct(this);
+	
+	this.name = "板甲鞋子";
+	this.armorType = Equipment.armorType.plate;
+	this.hitPoint = 25;
+};
+extend(PlateBoot, Boot);
 /**
  *腰带 
  */
@@ -378,9 +447,38 @@ var Belt = function(){
 	
 	this.name = "腰带";
 	this.type = Equipment.type.waist;
-	
+	this.activePropertyList.push('physicalArmor');
 }
 extend(Belt, Equipment);
+var ClothBelt = function(){
+	ClothBelt.parent.__construct(this);
+	this.name = "布甲腰带";
+	this.armorType = Equipment.armorType.cloth;
+	this.hipPoint = 10;
+};
+extend(ClothBelt, Belt);
+var LeatherBelt = function(){
+	LeatherBelt.parent.__construct(this);
+	this.name = "皮甲腰带";
+	this.armorType = Equipment.armorType.leather;
+	this.hipPoint = 15;
+};
+extend(LeatherBelt, Belt);
+
+var ChainBelt = function(){
+	ChainBelt.parent.__construct(this);
+	this.name = "锁甲腰带";
+	this.armorType = Equipment.armorType.chain;
+	this.hipPoint = 20;
+};
+extend(ChainBelt, Belt);
+var PlateBelt = function(){
+	PlateBelt.parent.__construct(this);
+	this.name = "板甲腰带";
+	this.armorType = Equipment.armorType.plate;
+	this.hipPoint = 25;
+};
+extend(PlateBelt, Belt);
 /**
  *饰品 
  */
@@ -534,6 +632,7 @@ EquipmentsManager.prototype = {
 	 *获取所有装备属性集合 
 	 */
 	getPropertyCollection: function(){
+		this.properties = {};
 		for(var i = 0, len = this.equipmentsList.length; i < len; i++){
 			var e = this.equipmentsList[i];
 			for(var pi in e.activePropertyList){

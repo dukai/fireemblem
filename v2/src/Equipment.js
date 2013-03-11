@@ -573,6 +573,7 @@ EquipmentsManager.prototype = {
 	 * @param {int, optional} 位置，指环和饰品
 	 */
 	equip: function(type, equipment, position){
+		//排除装备为戒指和饰品的情况
 		if(equipment.armorType === null && equipment.weaponType === null && (equipment.type !== Equipment.type.finger && equipment.type !== Equipment.type.adornment)){
 			debug && console.log(equipment.name + "装备失败：未知类型的装备");
 			return;

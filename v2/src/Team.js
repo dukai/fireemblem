@@ -23,7 +23,7 @@ Team.prototype = {
 	 */
 	addToTeam: function(person, rowIndex, columnIndex){
 		if(this.positionAvailable(rowIndex, columnIndex)){
-			this.formatinTable[rowIndex][columnIndex] = person;
+			this.formationTable[rowIndex][columnIndex] = person;
 			return person;
 		}else{
 			debug && console.log('当前栏位尚未解锁！');
@@ -40,7 +40,7 @@ Team.prototype = {
 			return true;
 		}
 		
-		if(util.inArray([rowIndex, columnIndex], this.availablePositions)){
+		if(util.inArray([rowIndex, columnIndex].toString(), this.availablePositions)){
 			return true;
 		}
 		
@@ -52,9 +52,9 @@ Team.prototype = {
 	 * @param {int} columnIndex
 	 */
 	unlockPosition: function(rowIndex, columnIndex){
-		if(rowIndex < this.maxRowCount - 1 && columnIndex < this.maxColumnCount - 1){
-			if(!util.inArray([rowIndex, columnIndex], this.availablePositions)){
-				this.availablePositions.push([rowIndex, columnIndex]);
+		if(rowIndex < this.maxRowCount && columnIndex < this.maxColumnCount){
+			if(!util.inArray([rowIndex, columnIndex].toString(), this.availablePositions)){
+				this.availablePositions.push([rowIndex, columnIndex].toString());
 				return true;
 			}
 		}

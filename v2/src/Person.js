@@ -145,8 +145,32 @@ var Person = function(name , gender){
 	 *武器装备类型 
 	 */
 	this.weaponType;
-	
+	//装备管理器
 	this.equipmentsManager = new EquipmentsManager(this);
+	//动作列表
+	this.actionList = {
+		attack: {
+			name : '攻击',
+			code: 'attack'
+		},
+		mustKill: {
+			name: '必杀',
+			code: 'mustKill'
+		},
+		goods: {
+			name: '物品',
+			code: 'goods'
+		},
+		search: {
+			name: '搜索',
+			code: 'serach'
+		},
+		await: {
+			name: '待机',
+			code: 'await'
+		}
+	};
+	
 };
 
 Person.prototype = {

@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Test - Team</title>
+	<script src="src/oo.js"></script>
+	<script src="src/util.js"></script>
+	<script src="src/equipment.js"></script>
+	<script src="src/person.js"></script>
+	<script src="src/team.js"></script>
+	<style>
+	#teambox{border-right:1px solid #000;border-bottom:1px solid #000;display:inline-block;}
+	.row{overflow:hidden;}
+	.item{width:100px;height:100px;border-left:1px solid #000;border-top:1px solid #000;float:left;display:inline-block;}
+	.unvailable{background:#ccc;}
+	</style>
+</head>
+<body>
+<div id="teambox"></div>
+<script>
+debug = true;
+var team = new Team();
+team.unlockPosition(1, 2);
+team.unlockPosition(3, 0);
+team.unlockPosition(3, 3);
+var doms = [[], [], [], []];
+for(var i = 0, row = team.maxRowCount; i < row; i++){
+	var rowDom = document.createElement('div');
+	rowDom.className = "row";
+	for(var j = 0, column = team.maxColumnCount; j < column; j++){
+		var columnDom = document.createElement('div');
+		columnDom.className = 'item';
+		if(!team.positionAvailable(i, j)){
+			columnDom.className += ' unvailable';
+		}
+		rowDom.appendChild(columnDom);
+		doms[i][j] = columnDom;
+	}
+	document.getElementById('teambox').appendChild(rowDom);
+}
+var first = new Hero();
+if(team.addToTeam(first, 0, 0)){
+	doms[0][0].innerHTML = first.units + first.name ;
+}
+
+var second = new Knight();
+if(team.addToTeam(second, 3, 0)){
+	doms[3][0].innerHTML = second.units + second.name ;
+}
+
+var third = new Pastor(null, false);
+if(team.addToTeam(second, 1, 0)){
+	doms[1][0].innerHTML = third.units + third.name ;
+}
+
+</script>
+</body>
+</html>

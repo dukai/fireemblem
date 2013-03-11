@@ -44,8 +44,8 @@ function test(){
 	
 	console.log(xm.units + ':' + wizard + ' | ' + xj.units + ':' + knight);
 }
-var dk = new Knight('dk', true);
-
+var dk = new Knight('小明', true);
+var ds = new Pastor('小静', false);
 //dk.equip(Equipment.type.head, new ClothHelmet());
 //dk.equip(Equipment.type.head, new LeatherHelmet());
 //dk.equip(Equipment.type.head, new ChainHelmet());
@@ -62,7 +62,7 @@ function attackUser(){
 	
 	do{
 		dk.attack(t);
-	}while(t.hitPointActual > 0);
+	}while(t.hitPointActual > 0 && dk.hitPointActual > 0);
 }
 
 </script>

@@ -177,13 +177,15 @@ Person.prototype = {
 	/**
 	 *攻击方法
 	 * @param {Person} otherPerson 攻击目标 
+	 * @param {bool, optional} 是否是回击
 	 */
-	attack : function(otherPerson){
+	attack : function(otherPerson, attackBack){
 		if(otherPerson.hitPointActual === 0){
 			debug && console.log("鞭尸不是好习惯，道德点减10");
 			return;
 		}
-		debug && console.log(this.units + this.name + '对' + otherPerson.units + otherPerson.name + '发动了攻击：');
+		var attackMsg = !!attackBack ? '发动了回击：' : '发动了攻击：' 
+		debug && console.log(this.units + this.name + '对' + otherPerson.units + otherPerson.name + attackMsg);
 		var damagePercent = 1;
 		var dodgeTurn = Math.ceil(Math.random() * 100);
 		var criticalStrikeTurn = Math.ceil(Math.random() * 100);
@@ -192,11 +194,12 @@ Person.prototype = {
 			damagePercent = this.criticalStrikeDamage;
 			debug && console.log(this.units + this.name + '暴击了');
 		}
-		
+		//计算实际伤害
 		var actualDamage = Math.ceil(((this.attackPower * damagePercent) - otherPerson.physicalArmor) * (((this.hitPoint - this.hitPointActual) / this.hitPoint) + 1));
 		//是否躲避
 		if(dodgeTurn <= otherPerson.dodge * 100){
 			actualDamage = 0;
+			debug && console.log(otherPerson.name + '躲闪了此次攻击');
 		}
 		if(actualDamage < 0){
 			actualDamage = 1;
@@ -208,6 +211,7 @@ Person.prototype = {
 		
 		if(otherPerson.hitPointActual <= 0){
 			debug && console.log(otherPerson.units + otherPerson.name + '已经死亡');
+			
 			otherPerson.hitPointActual = 0;
 			
 			var gains = this.exp.getFightExp(this.level, otherPerson.level);
@@ -217,16 +221,26 @@ Person.prototype = {
 				this.levelUpgrade();
 				debug && console.log(this.name + '升级了！当前等级：' + this.level);
 			}
+			debug && console.log('-------------');
 		}else{
 			debug && console.log(otherPerson.name + '剩余生命值' + otherPerson.hitPointActual);
 		}
 		
+		//发动回击
+		if(!attackBack && otherPerson.hitPointActual > 0){
+			
+			otherPerson.attack(this, true);
+		}
 	},
 	/**
 	 *治疗
 	 * @param {Person} 治疗目标 
 	 */
 	heal: function(otherPerson){
+		if(otherPerson.hitPointActual === 0){
+			debug && console.log("人已往矣，无力回天，徒呼奈何，节哀顺变！");
+			return;
+		}
 		debug && console.log(this.name + '对' + otherPerson.name + '开始了治疗：');
 		var healPercent = 1;
 		var criticalStrikeTurn = Math.ceil(Math.random() * 100);

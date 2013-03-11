@@ -115,6 +115,8 @@ var Person = function(name , gender){
 	this.magicArmorActual;
 	//躲闪几率
 	this.dodge;
+	//格挡
+	this.block = 0;
 	this.dodgeActual;
 	//暴击
 	this.criticalStrike;
@@ -180,6 +182,10 @@ Person.prototype = {
 	 * @param {bool, optional} 是否是回击
 	 */
 	attack : function(otherPerson, attackBack){
+		if(this.hitPointActual === 0){
+			debug && console.log('你已经阵亡了，节哀顺便');
+			return;
+		}
 		if(otherPerson.hitPointActual === 0){
 			debug && console.log("鞭尸不是好习惯，道德点减10");
 			return;
@@ -225,9 +231,10 @@ Person.prototype = {
 		}else{
 			debug && console.log(otherPerson.name + '剩余生命值' + otherPerson.hitPointActual);
 		}
-		
-		//发动回击
-		if(!attackBack && otherPerson.hitPointActual > 0){
+		//格挡几率
+		var blockTurn = Math.ceil(Math.random() * 100);
+		//格挡成功，发动回击
+		if(!attackBack && otherPerson.hitPointActual > 0 && blockTurn <= otherPerson.block * 100){
 			
 			otherPerson.attack(this, true);
 		}
@@ -293,6 +300,7 @@ var Hero = function(name, gender){
 	this.criticalStrike = .2;
 	this.lucky = .3;
 	this.mobility = 4;
+	this.block = .3;
 	this.attackRange = {min: 1, max: 1};
 };
 
@@ -317,6 +325,7 @@ var Knight = function(name, gender){
 	this.criticalStrike = .03;
 	this.lucky = .1;
 	this.mobility = 6;
+	this.block = .2;
 	this.attackRange = {min: 1, max: 1};
 };
 
@@ -341,6 +350,7 @@ var Archer = function(name, gender){
 	this.criticalStrike = .1;
 	this.lucky = .1;
 	this.mobility = 3;
+	this.block = .1;
 	this.attackRange = {min: 2, max: 3};
 }
 extend(Archer, Person);
@@ -364,6 +374,7 @@ var Wizard = function(name, gender){
 	this.criticalStrike = .12;
 	this.lucky = .1;
 	this.mobility = 1;
+	this.block = .05;
 	this.attackRange = {min: 2, max: 4};
 }
 extend(Wizard, Person);
@@ -387,6 +398,7 @@ var Infantry = function(name, gender){
 	this.criticalStrike = .01;
 	this.lucky = .1;
 	this.mobility = 3;
+	this.block = .5;
 	this.attackRange = {min: 1, max: 1};
 }
 extend(Infantry, Person);
@@ -408,10 +420,11 @@ var Pastor = function(name, gender){
 	this.healPower = 50;
 	this.physicalArmor = 20;
 	this.magicArmor = 40;
-	this.dodge = .06;
+	this.dodge = .1;
 	this.criticalStrike = .08;
 	this.lucky = .1;
 	this.mobility = 2;
+	this.block = .2;
 	this.attackRange = {min: 1, max: 2};
 }
 extend(Pastor, Person);

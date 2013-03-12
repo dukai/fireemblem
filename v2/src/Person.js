@@ -296,11 +296,11 @@ Person.prototype = {
 	levelUpgrade : function(){
 		this.level++;
 		
-		this.p.hitPoint *= 1.1;
-		this.p.attackPower *= 1.1;
-		this.p.physicalArmor *= 1.1;
-		this.p.magicArmor *= 1.1;
-		this.p.healPower *= 1.1;
+		this.p.hitPoint = Math.ceil(this.p.hitPoint * 1.1);
+		this.p.attackPower = Math.ceil(this.p.attackPower * 1.1);
+		this.p.physicalArmor = Math.ceil(this.p.physicalArmor * 1.1);
+		this.p.magicArmor = Math.ceil(this.p.magicArmor * 1.1);
+		this.p.healPower = Math.ceil(this.p.healPower * 1.1);
 		
 		this.updateActualProperties();
 	},

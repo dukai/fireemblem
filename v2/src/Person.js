@@ -136,6 +136,7 @@ var Person = function(name , gender){
 		criticalStrikeDamage : 2,
 		lucky : 0
 	};
+	this.hitPointActual = 0;
 	//移动能力
 	this.mobility;
 	this.mobilityActual;
@@ -188,6 +189,9 @@ var Person = function(name , gender){
 };
 
 Person.prototype = {
+	init: function(){
+		
+	},
 	/**
 	 *攻击方法
 	 * @param {Person} otherPerson 攻击目标 
@@ -208,14 +212,14 @@ Person.prototype = {
 		var dodgeTurn = Math.ceil(Math.random() * 100);
 		var criticalStrikeTurn = Math.ceil(Math.random() * 100);
 		//是否暴击
-		if(criticalStrikeTurn <= this.criticalStrike * (1 + this.lucky) * 100){
-			damagePercent = this.criticalStrikeDamage;
+		if(criticalStrikeTurn <= this.a.criticalStrike * (1 + this.a.lucky) * 100){
+			damagePercent = this.a.criticalStrikeDamage;
 			debug && console.log(this.units + this.name + '暴击了');
 		}
 		//计算实际伤害
-		var actualDamage = Math.ceil(((this.attackPower * damagePercent) - otherPerson.physicalArmor) * (((this.hitPoint - this.hitPointActual) / this.hitPoint) + 1));
+		var actualDamage = Math.ceil(((this.a.attackPower * damagePercent) - otherPerson.a.physicalArmor) * (((this.a.hitPoint - this.hitPointActual) / this.a.hitPoint) + 1));
 		//是否躲避
-		if(dodgeTurn <= otherPerson.dodge * 100){
+		if(dodgeTurn <= otherPerson.a.dodge * 100){
 			actualDamage = 0;
 			debug && console.log(otherPerson.name + '躲闪了此次攻击');
 		}
@@ -246,7 +250,7 @@ Person.prototype = {
 		//格挡几率
 		var blockTurn = Math.ceil(Math.random() * 100);
 		//格挡成功，发动回击
-		if(!attackBack && otherPerson.hitPointActual > 0 && blockTurn <= otherPerson.block * 100){
+		if(!attackBack && otherPerson.hitPointActual > 0 && blockTurn <= otherPerson.a.block * 100){
 			
 			otherPerson.attack(this, true);
 		}
@@ -264,15 +268,15 @@ Person.prototype = {
 		var healPercent = 1;
 		var criticalStrikeTurn = Math.ceil(Math.random() * 100);
 		//是否暴击
-		if(criticalStrikeTurn <= this.criticalStrike * 100){
-			healPercent = this.criticalStrikeDamage;
+		if(criticalStrikeTurn <= this.a.criticalStrike * 100){
+			healPercent = this.a.criticalStrikeDamage;
 		}
 		
-		var actualHeal = (this.healPower * healPercent);
+		var actualHeal = (this.a.healPower * healPercent);
 		otherPerson.hitPointActual += actualHeal;
-		if(otherPerson.hitPointActual >= otherPerson.hitPoint){
+		if(otherPerson.hitPointActual >= otherPerson.a.hitPoint){
 			debug && console.log('血量满');
-			otherPerson.hitPointActual = otherPerson.hitPoint;
+			otherPerson.hitPointActual = otherPerson.a.hitPoint;
 		}else{
 			debug && console.log(this.name + '为' + otherPerson.name + '治疗了' + actualHeal + '点生命');			
 		}
@@ -284,14 +288,37 @@ Person.prototype = {
 	equip: function(type, equipment, position){
 		this.equipmentsManager.equip(type, equipment, position);
 		this.equipmentsProperties = this.equipmentsManager.getPropertyCollection();
+		this.updateActualProperties();
 	},
 	/**
 	 *升级 
 	 */
 	levelUpgrade : function(){
 		this.level++;
-	}
+		
+		this.p.hitPoint *= 1.1;
+		this.p.attackPower *= 1.1;
+		this.p.physicalArmor *= 1.1;
+		this.p.magicArmor *= 1.1;
+		this.p.healPower *= 1.1;
+		
+		this.updateActualProperties();
+	},
 	
+	updateActualProperties: function(){
+		for(var key in this.p){
+			var hpDiff = this.a.hitPoint - this.hitPointActual;
+			var ep = this.equipmentsProperties[key];
+			if(!ep){
+				ep = 0;
+			}
+			this.a[key] = this.p[key] + ep;
+			if(key == 'hitPoint'){
+				this.hitPointActual = this.a.hitPoint - hpDiff;
+			}
+			
+		}
+	}
 	
 };
 /**
@@ -317,6 +344,8 @@ var Hero = function(name, gender){
 	
 	this.mobility = 4;
 	this.attackRange = {min: 1, max: 1};
+	
+	this.updateActualProperties();
 };
 
 extend(Hero, Person);
@@ -343,6 +372,8 @@ var Knight = function(name, gender){
 	
 	this.mobility = 6;
 	this.attackRange = {min: 1, max: 1};
+	
+	this.updateActualProperties();
 };
 
 extend(Knight, Person);
@@ -369,6 +400,8 @@ var Archer = function(name, gender){
 	
 	this.mobility = 3;
 	this.attackRange = {min: 2, max: 3};
+	
+	this.updateActualProperties();
 }
 extend(Archer, Person);
 
@@ -394,6 +427,8 @@ var Wizard = function(name, gender){
 	
 	this.mobility = 1;
 	this.attackRange = {min: 2, max: 4};
+	
+	this.updateActualProperties();
 }
 extend(Wizard, Person);
 
@@ -419,6 +454,8 @@ var Infantry = function(name, gender){
 	
 	this.mobility = 3;
 	this.attackRange = {min: 1, max: 1};
+	
+	this.updateActualProperties();
 }
 extend(Infantry, Person);
 
@@ -446,6 +483,8 @@ var Pastor = function(name, gender){
 	
 	this.mobility = 2;
 	this.attackRange = {min: 1, max: 2};
+	
+	this.updateActualProperties();
 }
 extend(Pastor, Person);
 

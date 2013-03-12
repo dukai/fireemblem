@@ -95,37 +95,47 @@ var Person = function(name , gender){
 	//经验
 	this.exp = new Experience();
 	this.exp.getLevelExp(this.level, true);
-	
-	//生命值
-	this.hitPoint = 0;
-	this.hitPointActual;
-	//体能值
-	this.stamina = 0;
-	this.staminaActual;
-	//攻击力
-	this.attackPower = 0;
-	this.attackPowerActual;
-	//加血能力
-	this.healPower = 0;
-	//物理防御
-	this.physicalArmor;
-	this.physicalArmorActual;
-	//魔法防御
-	this.magicArmor;
-	this.magicArmorActual;
-	//躲闪几率
-	this.dodge;
-	//格挡
-	this.block = 0;
-	this.dodgeActual;
-	//暴击
-	this.criticalStrike;
-	this.criticalStrikeActual;
-	//暴击伤害比例
-	this.criticalStrikeDamage = 2;
-	//幸运值
-	this.lucky;
-	this.luckyActual;
+	/**
+	 *角色固有属性 
+	 */
+	this.p = {
+		//生命值
+		hitPoint : 0,
+		//体能值
+		stamina : 0,
+		//攻击力
+		attackPower : 0,
+		//加血能力
+		healPower : 0,
+		//物理防御
+		physicalArmor : 0,
+		//魔法防御
+		magicArmor : 0,
+		//躲闪几率
+		dodge : 0,
+		//格挡
+		block : 0,
+		//暴击
+		criticalStrike : 0,
+		//暴击伤害比例
+		criticalStrikeDamage : 2,
+		//幸运值
+		lucky : 0
+		
+	};
+	this.a = {
+		hitPoint : 0,
+		stamina : 0,
+		attackPower : 0,
+		healPower : 0,
+		physicalArmor : 0,
+		magicArmor : 0,
+		dodge : 0,
+		block : 0,
+		criticalStrike : 0,
+		criticalStrikeDamage : 2,
+		lucky : 0
+	};
 	//移动能力
 	this.mobility;
 	this.mobilityActual;
@@ -149,6 +159,8 @@ var Person = function(name , gender){
 	this.weaponType;
 	//装备管理器
 	this.equipmentsManager = new EquipmentsManager(this);
+	//装备属性列表
+	this.equipmentsProperties = {};
 	//动作列表
 	this.actionList = {
 		attack: {
@@ -271,6 +283,7 @@ Person.prototype = {
 	 */
 	equip: function(type, equipment, position){
 		this.equipmentsManager.equip(type, equipment, position);
+		this.equipmentsProperties = this.equipmentsManager.getPropertyCollection();
 	},
 	/**
 	 *升级 
@@ -292,15 +305,17 @@ var Hero = function(name, gender){
 	this.armorType = Equipment.armorType.chain;
 	this.weaponType = Equipment.weaponType.sword;
 	this.units = '领袖';
-	this.hitPointActual = this.hitPoint = 480;
-	this.attackPower = 50;
-	this.physicalArmor = 25;
-	this.magicArmor = 10;
-	this.dodge = .08;
-	this.criticalStrike = .2;
-	this.lucky = .3;
+	
+	this.p.hitPoint = 480;
+	this.p.attackPower = 50;
+	this.p.physicalArmor = 25;
+	this.p.magicArmor = 10;
+	this.p.dodge = .08;
+	this.p.criticalStrike = .2;
+	this.p.lucky = .3;
+	this.p.block = .3;
+	
 	this.mobility = 4;
-	this.block = .3;
 	this.attackRange = {min: 1, max: 1};
 };
 
@@ -317,15 +332,16 @@ var Knight = function(name, gender){
 	this.armorType = Equipment.armorType.plate;
 	this.weaponType = Equipment.weaponType.spear;
 	this.units = '骑士';
-	this.hitPointActual = this.hitPoint = 520;
-	this.attackPower = 55;
-	this.physicalArmor = 28;
-	this.magicArmor = 10;
-	this.dodge = .01;
-	this.criticalStrike = .03;
-	this.lucky = .1;
+	this.p.hitPoint = 520;
+	this.p.attackPower = 55;
+	this.p.physicalArmor = 28;
+	this.p.magicArmor = 10;
+	this.p.dodge = .01;
+	this.p.criticalStrike = .03;
+	this.p.lucky = .1;
+	this.p.block = .2;
+	
 	this.mobility = 6;
-	this.block = .2;
 	this.attackRange = {min: 1, max: 1};
 };
 
@@ -342,15 +358,16 @@ var Archer = function(name, gender){
 	this.armorType = Equipment.armorType.leather;
 	this.weaponType = Equipment.weaponType.bow;
 	this.units = '弓箭手';
-	this.hitPointActual = this.hitPoint = 450;
-	this.attackPower = 60;
-	this.physicalArmor = 20;
-	this.magicArmor = 10;
-	this.dodge = .08;
-	this.criticalStrike = .1;
-	this.lucky = .1;
+	this.p.hitPoint = 450;
+	this.p.attackPower = 60;
+	this.p.physicalArmor = 20;
+	this.p.magicArmor = 10;
+	this.p.dodge = .08;
+	this.p.criticalStrike = .1;
+	this.p.lucky = .1;
+	this.p.block = .1;
+	
 	this.mobility = 3;
-	this.block = .1;
 	this.attackRange = {min: 2, max: 3};
 }
 extend(Archer, Person);
@@ -366,15 +383,16 @@ var Wizard = function(name, gender){
 	this.armorType = Equipment.armorType.cloth;
 	this.weaponType = Equipment.weaponType.staff;
 	this.units = '法师';
-	this.hitPointActual = this.hitPoint = 320;
-	this.attackPower = 90;
-	this.physicalArmor = 10;
-	this.magicArmor = 40;
-	this.dodge = .06;
-	this.criticalStrike = .12;
-	this.lucky = .1;
+	this.p.hitPoint = 320;
+	this.p.attackPower = 90;
+	this.p.physicalArmor = 10;
+	this.p.magicArmor = 40;
+	this.p.dodge = .06;
+	this.p.criticalStrike = .12;
+	this.p.lucky = .1;
+	this.p.block = .05;
+	
 	this.mobility = 1;
-	this.block = .05;
 	this.attackRange = {min: 2, max: 4};
 }
 extend(Wizard, Person);
@@ -390,15 +408,16 @@ var Infantry = function(name, gender){
 	this.armorType = Equipment.armorType.plate;
 	this.weaponType = Equipment.weaponType.chopper;
 	this.units = '步兵';
-	this.hitPointActual = this.hitPoint = 620;
-	this.attackPower = 40;
-	this.physicalArmor = 42;
-	this.magicArmor = 10;
-	this.dodge = .01;
-	this.criticalStrike = .01;
-	this.lucky = .1;
+	this.p.hitPoint = 620;
+	this.p.attackPower = 40;
+	this.p.physicalArmor = 42;
+	this.p.magicArmor = 10;
+	this.p.dodge = .01;
+	this.p.criticalStrike = .01;
+	this.p.lucky = .1;
+	this.p.block = .5;
+	
 	this.mobility = 3;
-	this.block = .5;
 	this.attackRange = {min: 1, max: 1};
 }
 extend(Infantry, Person);
@@ -415,16 +434,17 @@ var Pastor = function(name, gender){
 	this.armorType = Equipment.armorType.cloth;
 	this.weaponType = Equipment.weaponType.book;
 	this.units = '牧师';
-	this.hitPointActual = this.hitPoint = 430;
-	this.attackPower = 10;
-	this.healPower = 50;
-	this.physicalArmor = 20;
-	this.magicArmor = 40;
-	this.dodge = .1;
-	this.criticalStrike = .08;
-	this.lucky = .1;
+	this.p.hitPoint = 430;
+	this.p.attackPower = 10;
+	this.p.healPower = 50;
+	this.p.physicalArmor = 20;
+	this.p.magicArmor = 40;
+	this.p.dodge = .1;
+	this.p.criticalStrike = .08;
+	this.p.lucky = .1;
+	this.p.block = .2;
+	
 	this.mobility = 2;
-	this.block = .2;
 	this.attackRange = {min: 1, max: 2};
 }
 extend(Pastor, Person);

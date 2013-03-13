@@ -54,19 +54,19 @@ Bag.prototype = {
 	 */
 	addItem: function(item, x, y){
 		var index = -1;
+		if(x > this.maxX || y > this.maxY){
+			debug && console.log('超出范围');
+			return false;
+		}
 		if(arguments.length == 3){
-			if(x > this.maxX || y > this.maxY){
-				debug && console.log('超出范围');
-				return false;
-			}
 			index = this.xy2Index(x, y);
-			if(index > this.maxIndex){
-				debug && console.log('超出范围');
-				return false;
-			}
 		}else if(arguments.length == 2){
 			index = x;
 		}else{
+			return false;
+		}
+		if(index > this.maxIndex){
+			debug && console.log('超出范围');
 			return false;
 		}
 
@@ -80,6 +80,10 @@ Bag.prototype = {
 	 */
 	removeItem: function(x, y){
 		var index = -1;
+		if(x > this.maxX || y > this.maxY){
+			debug && console.log('超出范围');
+			return false;
+		}
 		switch (arguments.length){
 			case 2:{
 				index = this.xy2Index(x, y);
@@ -91,6 +95,11 @@ Bag.prototype = {
 			}
 			default :
 				return false;
+		}
+
+		if(index > this.maxIndex){
+			debug && console.log('超出范围');
+			return false;
 		}
 
 		this.itemList[index] = null;

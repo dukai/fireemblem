@@ -17,6 +17,10 @@ var Bag = function(){
 	 * @type {number}
 	 */
 	this.currentUnlock = this.origUnlock;
+	this.totalCount = 40;
+	this.maxX = this.column - 1;
+	this.maxY = Math.floor(this.totalCount / this.column);
+	this.maxIndex = this.totalCount - 1;
 };
 
 Bag.prototype = {
@@ -51,7 +55,15 @@ Bag.prototype = {
 	addItem: function(item, x, y){
 		var index = -1;
 		if(arguments.length == 3){
+			if(x > this.maxX || y > this.maxY){
+				debug && console.log('超出范围');
+				return false;
+			}
 			index = this.xy2Index(x, y);
+			if(index > this.maxIndex){
+				debug && console.log('超出范围');
+				return false;
+			}
 		}else if(arguments.length == 2){
 			index = x;
 		}else{

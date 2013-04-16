@@ -1,3 +1,24 @@
+var gameResources = [
+	{'name': 'newworld', type: 'image', src: 'data/images/newworld.png'},
+	{'name': 'metatiles32x32', type: 'image', src: 'data/images/metatiles32x32.png'},
+	{'name': 'map1', type: 'tmx', 'src': 'data/map1.tmx'},
+	{'name': 'soldier', type:'image', src: 'data/images/soldier.png'},
+	{'name': 'archer', type:'image', src: 'data/images/archer.png'},
+	{'name': 'knight', type:'image', src: 'data/images/knight.png'},
+	{name: 'test', type: 'tmx', src: 'data/test.tmx'},
+	{name: 'new', type:'image', src: 'data/new.png'},
+	{name: 'newmap', type: 'tmx', src: 'data/new.tmx'}
+];
+
+resourceLoader.load(gameResources);
+
+resourceLoader.onProgress = function(e){
+	console.log(e.loadedCount / e.totalCount);
+};
+resourceLoader.onComplete = function(){
+	console.log("Complete");
+};
+
 var stage = new Kinetic.Stage({
     container: 'mainbox',
     width: 640,

@@ -13,7 +13,7 @@ var gameResources = [
 resourceLoader.load(gameResources);
 
 resourceLoader.onProgress = function(e){
-	console.log(e.loadedCount / e.totalCount);
+	console.log(~~(e.loadedCount * 100 / e.totalCount) + '%');
 };
 resourceLoader.onComplete = function(){
 	console.log("Complete");
@@ -49,9 +49,12 @@ var rect = new Kinetic.Rect({
 	strokeWidth: 4
 });
 
+var map = new TiledMap({});
+
 layer.add(rect);
 layer.add(solider);
 stage.add(layer);
+stage.add(map);
 
 var keyFrame = 0;
 var anim = new Kinetic.Animation(function(frame){

@@ -17,7 +17,17 @@ resourceLoader.onProgress = function(e){
 };
 resourceLoader.onComplete = function(){
 	console.log("Complete");
-
+	var map = new TiledMap({
+		x: 10,
+		y: 10,
+		width:100,
+		height:150,
+		fill:'green',
+		stroke: 'black',
+		strokeWidth: 4,
+		tmx: resourceLoader.get('newmap'),
+		resourceLoader: resourceLoader
+	});
 	layer.add(map);
 	stage.add(layer);
 };
@@ -52,15 +62,7 @@ var rect = new Kinetic.Rect({
 	strokeWidth: 4
 });
 
-var map = new TiledMap({
-	x: 10,
-	y: 10,
-	width:100,
-	height:150,
-	fill:'green',
-	stroke: 'black',
-	strokeWidth: 4
-});
+
 
 //layer.add(rect);
 //layer.add(solider);

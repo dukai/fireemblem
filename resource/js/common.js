@@ -7,13 +7,14 @@ var gameResources = [
 	{'name': 'knight', type:'image', src: 'data/images/knight.png'},
 	{name: 'test', type: 'tmx', src: 'data/test.tmx'},
 	{name: 'new', type:'image', src: 'data/new.png'},
-	{name: 'newmap', type: 'tmx', src: 'data/new.tmx'}
+	{name: 'newmap', type: 'tmx', src: 'data/new.tmx'},
+	{name: 'demo_map', type: 'json', src: 'data/demo_map.json'}
 ];
 
 resourceLoader.load(gameResources);
 
 resourceLoader.onProgress = function(e){
-	console.log(~~(e.loadedCount * 100 / e.totalCount) + '%');
+	//console.log(~~(e.loadedCount * 100 / e.totalCount) + '%');
 };
 resourceLoader.onComplete = function(){
 	console.log("Complete");
@@ -25,10 +26,11 @@ resourceLoader.onComplete = function(){
 		fill:'green',
 		stroke: 'black',
 		strokeWidth: 4,
-		tmx: resourceLoader.get('newmap'),
+		tmx: resourceLoader.get('demo_map'),
 		resourceLoader: resourceLoader
 	});
 	layer.add(map);
+	layer.add(solider);
 	stage.add(layer);
 };
 
@@ -84,4 +86,4 @@ var anim = new Kinetic.Animation(function(frame){
 	keyFrame = keyFrame;
 	solider.setFillPatternOffset({x: 0, y: pos * 48});
 }, layer);
-anim.start();
+//anim.start();

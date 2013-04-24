@@ -18,11 +18,9 @@ resourceLoader.onProgress = function(e){
 };
 resourceLoader.onComplete = function(){
 	console.log("Complete");
-	var map = new TiledMap({
-		x: 10,
-		y: 10,
-		width:100,
-		height:150,
+	map = new TiledMap({
+		x: 0,
+		y: 0,
 		fill:'green',
 		stroke: 'black',
 		strokeWidth: 4,
@@ -39,7 +37,7 @@ var stage = new Kinetic.Stage({
     width: 640,
     height: 480
 });
-
+var map;
 var layer = new Kinetic.Layer();
 
 var imgObj = new Image();
@@ -67,7 +65,7 @@ var rect = new Kinetic.Rect({
 
 
 //layer.add(rect);
-//layer.add(solider);
+layer.add(solider);
 
 //stage.add(map);
 
@@ -86,4 +84,4 @@ var anim = new Kinetic.Animation(function(frame){
 	keyFrame = keyFrame;
 	solider.setFillPatternOffset({x: 0, y: pos * 48});
 }, layer);
-//anim.start();
+anim.start();

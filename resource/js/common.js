@@ -21,9 +21,6 @@ resourceLoader.onComplete = function(){
 	map = new TiledMap({
 		x: 0,
 		y: 0,
-		fill:'green',
-		stroke: 'black',
-		strokeWidth: 4,
 		tmx: resourceLoader.get('demo_map'),
 		resourceLoader: resourceLoader
 	});
@@ -38,7 +35,23 @@ var stage = new Kinetic.Stage({
     height: 480
 });
 var map;
-var layer = new Kinetic.Layer();
+var layer = new Kinetic.Layer({
+	draggable: true,
+	dragBoundFunc: function(pos){
+		var y = pos.y < 480 - map.getHeight() ? 480 - map.getHeight() : pos.y;
+		var x = pos.x < 640 - map.getWidth() ? 640 - map.getWidth() : pos.x;
+		if(y > 0){
+			y = 0;
+		}
+		if(x > 0){
+			x = 0;
+		}
+		return {
+			x: x,
+			y: y
+		}
+	}
+});
 
 var imgObj = new Image();
 imgObj.src = "data/images/soldier.png";

@@ -21,8 +21,13 @@ function getRange(target, range, hitmap){
 			if(dx + dy <= range){
 				
 				if(x !== target.x || y !== target.y){
+					console.log(x + ', ' + y);
 					var as = new PathFinder.AStar(new PathFinder.HitMap(hitmap), new PathFinder.Node(target.x, target.y), new PathFinder.Node(x, y));
-					if(as.getPath() !== false){
+					var path = as.getPath();
+					
+					if(path !== false && path.getCount() <= range + 2){
+						console.log(path.nodelist[path.nodelist.length - 1].x + ', ' + path.nodelist[path.nodelist.length - 1].y);
+						console.log(path.nodelist.length);
 						list.push({x: x, y: y});
 					}
 				}
@@ -42,7 +47,9 @@ var gameResources = [
 	{name: 'test', type: 'tmx', src: 'data/test.tmx'},
 	{name: 'new', type:'image', src: 'data/new.png'},
 	{name: 'newmap', type: 'tmx', src: 'data/new.tmx'},
-	{name: 'demo_map', type: 'json', src: 'data/demo_map.json'}
+	{name: 'demo_map', type: 'json', src: 'data/demo_map.json'},
+	{name: 'v2_map', type: 'json', src: 'data/v2.json'},
+	{name: 'v2', type: 'image', src: 'data/v2.png'}
 ];
 
 resourceLoader.load(gameResources);
@@ -95,6 +102,7 @@ resourceLoader.onComplete = function(){
 	});
 	
 	layer.on('click', function(e){
+		console.log('click');
 		var mpos = stage.getMousePosition();
 		
 		var posInLayer = {
@@ -146,7 +154,7 @@ resourceLoader.onComplete = function(){
 	map = new TiledMap({
 		x: 0,
 		y: 0,
-		tmx: resourceLoader.get('demo_map'),
+		tmx: resourceLoader.get('v2_map'),
 		resourceLoader: resourceLoader
 	});
 	
@@ -187,11 +195,27 @@ resourceLoader.onComplete = function(){
 		linesGroup.add(redLine);
 	}
 	
+	for(var tx = 0; tx <= map.getRows(); tx++){
+		for(var ty = 0; ty <= map.getColumns(); ty++){
+			var x = tx * 32, y = ty * 32;
+			var txt = new Kinetic.Text({
+				x: x,
+				y: y,
+				text : tx + ', ' + ty,
+				fontSize: 10,
+				fill: '#000'
+			});
+			
+			linesGroup.add(txt);
+		}
+	}
 	
 	layer.add(map);
-	layer.add(linesGroup);
 	layer.add(moveCursorGroup);
+	layer.add(linesGroup);
+	
 	layer.add(solider);
+	
 	stage.add(layer);
 };
 

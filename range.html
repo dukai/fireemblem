@@ -29,7 +29,7 @@ for(var d1 = 0; d1 < 80; d1++){
 	
 	mapArray.push(a);
 }
-var hitmap = new HitMap(mapArray);
+var hitmap = new PathFinder.HitMap(mapArray);
 var split = 30;
 function initRect(){
 	context.clearRect(0, 0, 800, 800);

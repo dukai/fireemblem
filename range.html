@@ -20,7 +20,7 @@ var mapArray = [];
 for(var d1 = 0; d1 < 80; d1++){
 	var a = [];
 	for(var d2 = 0; d2 < 80; d2++){
-		if(Math.random() > .5){
+		if(Math.random() > .8){
 			a.push(1);
 		}else{
 			a.push(0);
@@ -29,7 +29,7 @@ for(var d1 = 0; d1 < 80; d1++){
 	
 	mapArray.push(a);
 }
-var hitmap = new HitMap(mapArray);
+var hitmap = new PathFinder.HitMap(mapArray);
 var split = 30;
 function initRect(){
 	context.clearRect(0, 0, 800, 800);
@@ -81,7 +81,7 @@ document.getElementById('sence').onclick = function(e){
 
 function setPoints(px, py){
 
-	var list = getRange(new Vector(px, py), 3);
+	var list = getRange(new Vector(px, py), 4);
 	for(var i = 0, len = list.length; i < len; i++){
 		var n = list[i];
 		var pixX = n.x * split + 10.5, pixY =  n.y * split + 10.5;
@@ -105,7 +105,7 @@ function getRange(target, range){
 			var dx = Math.abs(x - target.x);
 			var dy = Math.abs(y - target.y);
 			
-			if(dx * dx + dy * dy <= range * range){
+			if(dx + dy <= range){
 				var n = new Vector(x, y);
 				
 				n.equal(target) || list.push(n);

@@ -73,7 +73,8 @@ resourceLoader.load(gameResources);
 resourceLoader.onProgress = function(e){
 };
 resourceLoader.onComplete = function(){
-	//console.log("Complete");
+	
+	var soliderModel = new Solider();
 	var activeObj = null;
 	var stage = new Kinetic.Stage({
 	    container: 'mainbox',
@@ -156,6 +157,7 @@ resourceLoader.onComplete = function(){
 			{x: 128, y: 320, width:80, height:64}
 		]
 	};
+	
 	var solider = new Kinetic.Sprite({
 		x: -8,
 		y: -16,

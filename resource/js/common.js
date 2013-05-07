@@ -173,7 +173,15 @@ resourceLoader.onComplete = function(){
 		animation: 'idle',
 		animations: soliderAnimation,
 		frameRate: 7,
-		index: 0
+		index: 0,
+		
+		drawHitFunc: function(canvas){
+			var context = canvas.getContext();
+			context.beginPath();
+			context.rect(8, 16, 32, 32);
+			context.closePath();
+			canvas.fillStroke(this);
+		}
 	});
 	
 	layer.on('click', function(e){
@@ -218,6 +226,7 @@ resourceLoader.onComplete = function(){
 						y: pos.y - 16,
 						itemsList: [{text: '攻击', callback: function(){
 							solider.setAnimation('atk');
+							pm.setOpacity(0);
 						}}, {text: '待机'}, {text: '取消'}	]
 					});
 					

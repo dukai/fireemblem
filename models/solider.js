@@ -15,31 +15,7 @@ Solider.prototype = {
 			'move', 'attack', 'wait'
 		];
 	},
-	/**
-	 *获取实际的坐标对象包含X，Y
-	 * @param {Number} offsetX
-	 * @param {Number} offsetY
-	 * @return {JSON} {X, Y} 
-	 */
-	getRealPos: function(offsetX, offsetY){
-		return {x: this.x * 32 + offsetX, y: this.y * 32 + offsetY}
-	},
-	/**
-	 *实际的坐标X
-	 * @param {Number} offset 偏移量
-	 * @return {Number} 坐标值 
-	 */
-	getRealX: function(offset){
-		return this.x * 32 + offset;
-	},
-	/**
-	 *实际的坐标Y
-	 * @param {Number} offset 偏移量
-	 * @return {Number} 坐标值  
-	 */
-	getRealY: function(offset){
-		return this.y * 32 + offset;
-	},
+	
 	
 	/**
 	 * 获取移动范围

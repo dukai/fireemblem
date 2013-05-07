@@ -15,6 +15,20 @@ SoliderView.prototype = {
 		this.defaultAnimation = 'idle';
 		this.frameRate = 8;
 		this.index = 0;
+		
+		this.sprite = new Kinetic.Sprite({
+			x: this.getRealX(this.offsetX),
+			y: this.getRealY(this.offsetY),
+			image: this.getImage(),
+			animation: this.defaultAnimation,
+			animations: this.getAnimation(),
+			frameRate: this.frameRate,
+			index: this.index
+		});
+	},
+	
+	getImage: function(){
+		return this.attrs.image;
 	},
 	
 	getAnimation: function(){

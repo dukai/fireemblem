@@ -75,6 +75,11 @@ resourceLoader.onProgress = function(e){
 resourceLoader.onComplete = function(){
 	
 	var soliderModel = new Solider();
+	soliderModel.x = 8;
+	soliderModel.y = 6;
+	
+	var soliderView = new SoliderView();
+	
 	var activeObj = null;
 	var stage = new Kinetic.Stage({
 	    container: 'mainbox',
@@ -159,8 +164,8 @@ resourceLoader.onComplete = function(){
 	};
 	
 	var solider = new Kinetic.Sprite({
-		x: -8,
-		y: -16,
+		x: soliderModel.getRealX(-8),
+		y: soliderModel.getRealY(-16),
 		image: resourceLoader.get('soldier'),
 		animation: 'idle',
 		animations: soliderAnimation,

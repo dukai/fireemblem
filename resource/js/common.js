@@ -78,7 +78,11 @@ resourceLoader.onComplete = function(){
 	soliderModel.x = 8;
 	soliderModel.y = 6;
 	
-	var soliderView = new SoliderView();
+	var soliderView = new SoliderView({
+		x: 8,
+		y: 6,
+		image: resourceLoader.get('soldier'),
+	});
 	
 	var activeObj = null;
 	var stage = new Kinetic.Stage({
@@ -109,8 +113,7 @@ resourceLoader.onComplete = function(){
 	
 	var moveCursorGroup = new Kinetic.Group({
 		x: 0,
-		y: 0,
-		opacity: .5
+		y: 0
 	});
 	
 	/*
@@ -164,8 +167,8 @@ resourceLoader.onComplete = function(){
 	};
 	
 	var solider = new Kinetic.Sprite({
-		x: soliderModel.getRealX(-8),
-		y: soliderModel.getRealY(-16),
+		x: soliderView.getRealX(-8),
+		y: soliderView.getRealY(-16),
 		image: resourceLoader.get('soldier'),
 		animation: 'idle',
 		animations: soliderAnimation,
@@ -190,38 +193,40 @@ resourceLoader.onComplete = function(){
 		moveCursorGroup.removeChildren();
 		
 		var list = getRange(coordinate, 4, hitmap);
-		for(var i in list){
-			var item = list[i];
-			var rect = new Kinetic.Rect({
-				x: item.x * 32,
-				y: item.y * 32,
-				width:32,
-				height:32,
-				fill: 'red',
-			});
-			
-			rect.on('click', function(){
-				var mpos = stage.getMousePosition();
-				var tc = getCoordinate(mpos.x, mpos.y, layer.getX(), layer.getY());
-				console.log(tc);
-				var pos = {
-					x: tc.x * 32,
-					y: tc.y * 32
+		var rv = new RangeView({
+			x: 0,
+			y: 0,
+			rangeList: list,
+			fill: 'rgba(255, 0, 0, .5)'
+		});
+		rv.on('click', function(e){
+			var mpos = stage.getMousePosition();
+			var tc = getCoordinate(mpos.x, mpos.y, layer.getX(), layer.getY());
+			console.log(tc);
+			var pos = {
+				x: tc.x * 32,
+				y: tc.y * 32
+			}
+			solider.transitionTo({
+				x: pos.x - 8,
+				y: pos.y - 16,
+				duration: 1,
+				callback: function(){
+					
+					var pm = new PopMenuView({
+						x: pos.x + 42, 
+						y: pos.y - 16,
+						itemsList: [{text: '攻击', callback: function(){
+							solider.setAnimation('atk');
+						}}, {text: '待机'}, {text: '取消'}	]
+					});
+					
+					layer.add(pm);
+					layer.draw();
 				}
-				console.log(pos);
-				console.log(solider.getX() + ', ' + solider.getY());
-				solider.transitionTo({
-					x: pos.x - 8,
-					y: pos.y - 16,
-					duration: 1,
-					callback: function(){
-						
-					}
-				});
 			});
-			moveCursorGroup.add(rect);
-		}
-		
+		});
+		moveCursorGroup.add(rv);
 		layer.draw();
 		
 	});
@@ -345,6 +350,30 @@ resourceLoader.onComplete = function(){
 		}
 	}
 	
+	var rv = new RangeView({
+		x: 0,
+		y: 0,
+		rangeList: [{x: 1, y: 1}, {x: 2, y:2}, {x: 3, y: 3}],
+		fill: 'rgba(255, 0, 0, .5)'
+	});
+	var menuBg = new Kinetic.Rect({
+		x: 0,
+		y: 0,
+		width: 100,
+		height:24,
+		fill: 'green'
+	});
+	
+	/*
+	pm.add(new Kinetic.Rect({
+						x: 0,
+						y: 0,
+						width: 100,
+						height:24,
+						fill: 'green'
+					}));
+					
+	*/
 	layer.add(map);
 	layer.add(moveCursorGroup);
 	layer.add(linesGroup);
@@ -352,6 +381,7 @@ resourceLoader.onComplete = function(){
 	layer.add(archer);
 	solider.start();
 	archer.start();
+	layer.add(rv);
 	stage.add(layer);
 };
 

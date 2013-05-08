@@ -11,7 +11,7 @@ var PopMenuView = function(config){
 PopMenuView.prototype = {
 	_initPopMenuView: function(config){
 		Kinetic.Group.call(this, config);
-		
+		this.setName('popmenugroup');
 		this.initItems();
 	},
 	
@@ -31,6 +31,15 @@ PopMenuView.prototype = {
 			
 			menuBg.on('click', function(e){
 				self.getItemsList()[this.menuindex].callback && self.getItemsList()[this.menuindex].callback();
+				
+				self.remove();
+			});
+			
+			menuBg.on('mouseover', function(e){
+				this.setFill( '#090');
+			});
+			menuBg.on('mouseout', function(e){
+				this.setFill('green');
 			});
 			var word = new Kinetic.Text({
 				x: 0,

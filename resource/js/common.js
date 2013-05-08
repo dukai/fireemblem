@@ -74,24 +74,14 @@ resourceLoader.onProgress = function(e){
 };
 resourceLoader.onComplete = function(){
 	
-	var soliderModel = new Solider();
-	soliderModel.x = 8;
-	soliderModel.y = 6;
 	
-	var soliderView = new SoliderView({
-		x: 8,
-		y: 6,
-		image: resourceLoader.get('soldier'),
-	});
 	
 	var activeObj = null;
 	var stage = new Kinetic.Stage({
 	    container: 'mainbox',
-	    width: 800,
-	    height: 600
+	    width: 960,
+	    height: 640
 	});
-	var map;
-	
 	
 	var layer = new Kinetic.Layer({
 		draggable: true,
@@ -111,134 +101,7 @@ resourceLoader.onComplete = function(){
 		}
 	});
 	
-	var moveCursorGroup = new Kinetic.Group({
-		x: 0,
-		y: 0
-	});
 	
-	/*
-	var solider = new Kinetic.Image({
-	    x: 416,
-	    y: 448,
-	    fillPatternImage: resourceLoader.get('soldier'),
-	    width:48,
-	    height:48,
-		fillPatternOffset: {x: 0, y: 0},
-		drawHitFunc: function(canvas){
-			var width = this.getWidth(), 
-                height = this.getHeight(), 
-                context = canvas.getContext();
-
-            context.beginPath();
-            context.rect(0, 0, width, height);
-            context.closePath();
-            canvas.fillStroke(this);
-		}
-	});
-	*/
-	var soliderAnimation = {
-		idle: [
-			{x: 0, y: 0, width: 48, height: 48},
-			{x: 0, y: 48, width: 48, height: 48},
-			{x: 0, y: 96, width: 48, height: 48},
-			{x: 0, y: 144, width: 48, height: 48},
-			{x: 0, y: 192, width: 48, height: 48},
-			{x: 0, y: 240, width: 48, height: 48},
-			{x: 0, y: 288, width: 48, height: 48},
-			{x: 0, y: 336, width: 48, height: 48}
-		],
-		atk: [
-			{x: 48, y: 0, width:80, height:52},
-			{x: 48, y: 52, width:80, height:52},
-			{x: 48, y: 104, width:80, height:52},
-			{x: 48, y: 156, width:80, height:52},
-			{x: 48, y: 208, width:80, height:52},
-			{x: 48, y: 260, width:80, height:52},
-			{x: 48, y: 312, width:80, height:52}
-		],
-		dead: [
-			{x: 128, y: 0, width:80, height:64},
-			{x: 128, y: 64, width:80, height:64},
-			{x: 128, y: 128, width:80, height:64},
-			{x: 128, y: 192, width:80, height:64},
-			{x: 128, y: 256, width:80, height:64},
-			{x: 128, y: 320, width:80, height:64}
-		]
-	};
-	
-	var solider = new Kinetic.Sprite({
-		x: soliderView.getRealX(-8),
-		y: soliderView.getRealY(-16),
-		image: resourceLoader.get('soldier'),
-		animation: 'idle',
-		animations: soliderAnimation,
-		frameRate: 7,
-		index: 0,
-		
-		drawHitFunc: function(canvas){
-			var context = canvas.getContext();
-			context.beginPath();
-			context.rect(8, 16, 32, 32);
-			context.closePath();
-			canvas.fillStroke(this);
-		}
-	});
-	
-	layer.on('click', function(e){
-		moveCursorGroup.removeChildren();
-	});
-	
-	
-	solider.on('click', function(e){
-		e.cancelBubble = true;
-		
-		activeObj = solider;
-		
-		var mpos = stage.getMousePosition();
-		
-		var coordinate = getCoordinate(mpos.x, mpos.y, layer.getX(), layer.getY());
-		
-		moveCursorGroup.removeChildren();
-		
-		var list = getRange(coordinate, 4, hitmap);
-		var rv = new RangeView({
-			x: 0,
-			y: 0,
-			rangeList: list,
-			fill: 'rgba(255, 0, 0, .5)'
-		});
-		rv.on('click', function(e){
-			var mpos = stage.getMousePosition();
-			var tc = getCoordinate(mpos.x, mpos.y, layer.getX(), layer.getY());
-			console.log(tc);
-			var pos = {
-				x: tc.x * 32,
-				y: tc.y * 32
-			}
-			solider.transitionTo({
-				x: pos.x - 8,
-				y: pos.y - 16,
-				duration: 1,
-				callback: function(){
-					
-					var pm = new PopMenuView({
-						x: pos.x + 42, 
-						y: pos.y - 16,
-						itemsList: [{text: '攻击', callback: function(){
-							solider.setAnimation('atk');
-							pm.setOpacity(0);
-						}}, {text: '待机'}, {text: '取消'}	]
-					});
-					
-					layer.add(pm);
-					layer.draw();
-				}
-			});
-		});
-		moveCursorGroup.add(rv);
-		layer.draw();
-		
-	});
 	
 	var archerAnimation = {
 		idle: [
@@ -298,7 +161,7 @@ resourceLoader.onComplete = function(){
 	}, layer);
 	*/
 	//anim.start();
-	map = new TiledMap({
+	var map = new TiledMap({
 		x: 0,
 		y: 0,
 		tmx: resourceLoader.get('v2_map'),
@@ -358,6 +221,171 @@ resourceLoader.onComplete = function(){
 			//linesGroup.add(txt);
 		}
 	}
+	//add map and lines 
+	layer.add(map);
+	layer.add(linesGroup);
+	
+	var soliderModel = new Solider({
+		x: 8, 
+		y: 6,
+		moveRange: 4,
+		atkRange: 1
+	});
+	
+	var soliderView = new SoliderView({
+		x: 8,
+		y: 6,
+		image: resourceLoader.get('soldier'),
+		tolayer: layer,
+		hitmap: hitmap,
+		model: soliderModel
+	});
+	
+	
+	var moveCursorGroup = new Kinetic.Group({
+		x: 0,
+		y: 0
+	});
+	
+	/*
+	var solider = new Kinetic.Image({
+	    x: 416,
+	    y: 448,
+	    fillPatternImage: resourceLoader.get('soldier'),
+	    width:48,
+	    height:48,
+		fillPatternOffset: {x: 0, y: 0},
+		drawHitFunc: function(canvas){
+			var width = this.getWidth(), 
+                height = this.getHeight(), 
+                context = canvas.getContext();
+
+            context.beginPath();
+            context.rect(0, 0, width, height);
+            context.closePath();
+            canvas.fillStroke(this);
+		}
+	});
+	*/
+	var soliderAnimation = {
+		idle: [
+			{x: 0, y: 0, width: 48, height: 48},
+			{x: 0, y: 48, width: 48, height: 48},
+			{x: 0, y: 96, width: 48, height: 48},
+			{x: 0, y: 144, width: 48, height: 48},
+			{x: 0, y: 192, width: 48, height: 48},
+			{x: 0, y: 240, width: 48, height: 48},
+			{x: 0, y: 288, width: 48, height: 48},
+			{x: 0, y: 336, width: 48, height: 48}
+		],
+		atk: [
+			{x: 48, y: 0, width:80, height:52},
+			{x: 48, y: 52, width:80, height:52},
+			{x: 48, y: 104, width:80, height:52},
+			{x: 48, y: 156, width:80, height:52},
+			{x: 48, y: 208, width:80, height:52},
+			{x: 48, y: 260, width:80, height:52},
+			{x: 48, y: 312, width:80, height:52}
+		],
+		dead: [
+			{x: 128, y: 0, width:80, height:64},
+			{x: 128, y: 64, width:80, height:64},
+			{x: 128, y: 128, width:80, height:64},
+			{x: 128, y: 192, width:80, height:64},
+			{x: 128, y: 256, width:80, height:64},
+			{x: 128, y: 320, width:80, height:64}
+		]
+	};
+	
+	var solider = new Kinetic.Sprite({
+		x: soliderView.getRealX(8, -8),
+		y: soliderView.getRealY(6, -16),
+		image: resourceLoader.get('soldier'),
+		animation: 'idle',
+		animations: soliderAnimation,
+		frameRate: 7,
+		index: 0,
+		
+		drawHitFunc: function(canvas){
+			var context = canvas.getContext();
+			context.beginPath();
+			context.rect(8, 16, 32, 32);
+			context.closePath();
+			canvas.fillStroke(this);
+		}
+	});
+	
+	layer.on('click', function(e){
+		moveCursorGroup.removeChildren();
+	});
+	
+	
+	solider.on('click', function(e){
+		e.cancelBubble = true;
+		
+		activeObj = solider;
+		
+		var mpos = stage.getMousePosition();
+		
+		var coordinate = getCoordinate(mpos.x, mpos.y, layer.getX(), layer.getY());
+		
+		moveCursorGroup.removeChildren();
+		
+		var list = getRange(coordinate, 4, hitmap);
+		var rv = new RangeView({
+			x: 0,
+			y: 0,
+			rangeList: list,
+			fill: 'rgba(255, 0, 0, .5)'
+		});
+		rv.on('click', function(e){
+			var mpos = stage.getMousePosition();
+			var tc = getCoordinate(mpos.x, mpos.y, layer.getX(), layer.getY());
+			console.log(tc);
+			var pos = {
+				x: tc.x * 32,
+				y: tc.y * 32
+			}
+			solider.transitionTo({
+				x: pos.x - 8,
+				y: pos.y - 16,
+				duration: .2,
+				callback: function(){
+					
+					var pm = new PopMenuView({
+						x: pos.x + 42, 
+						y: pos.y - 16,
+						itemsList: [
+							{text: '攻击', callback: function(){
+								var atkList = getRange(tc, 1, hitmap);
+								var atkRV = new RangeView({
+									x: 0,
+									y: 0,
+									rangeList: atkList,
+									fill: 'rgba(255, 200, 0, .8)'
+								});
+								layer.add(atkRV);
+								//layer.draw();
+								//solider.setAnimation('atk');
+							}}, 
+							{text: '待机', callback: function(){
+								//TODO: do nothing
+							}}, 
+							{text: '取消', callback: function(){
+								//TODO: go back to the last position
+							}}
+						]
+					});
+					
+					layer.add(pm);
+					layer.draw();
+				}
+			});
+		});
+		moveCursorGroup.add(rv);
+		layer.draw();
+		
+	});
 	
 	var rv = new RangeView({
 		x: 0,
@@ -365,32 +393,16 @@ resourceLoader.onComplete = function(){
 		rangeList: [{x: 1, y: 1}, {x: 2, y:2}, {x: 3, y: 3}],
 		fill: 'rgba(255, 0, 0, .5)'
 	});
-	var menuBg = new Kinetic.Rect({
-		x: 0,
-		y: 0,
-		width: 100,
-		height:24,
-		fill: 'green'
-	});
 	
-	/*
-	pm.add(new Kinetic.Rect({
-						x: 0,
-						y: 0,
-						width: 100,
-						height:24,
-						fill: 'green'
-					}));
-					
-	*/
-	layer.add(map);
+	
 	layer.add(moveCursorGroup);
-	layer.add(linesGroup);
-	layer.add(solider);
+	
+	//layer.add(solider);
+	//layer.add(soliderView.sprite);
 	layer.add(archer);
-	solider.start();
+	//solider.start();
 	archer.start();
-	layer.add(rv);
+	//layer.add(rv);
 	stage.add(layer);
 };
 

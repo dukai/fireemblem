@@ -24,7 +24,7 @@ AbstractView.prototype = {
 	 * @return {Number} 坐标值 
 	 */
 	getRealX: function(offset){
-		return this.getX() * 32 + offset;
+		return this.getRealPos(this.getX() , offset);
 	},
 	/**
 	 *实际的坐标Y
@@ -32,9 +32,12 @@ AbstractView.prototype = {
 	 * @return {Number} 坐标值  
 	 */
 	getRealY: function(offset){
-		return this.getY() * 32 + offset;
+		return this.getRealPos(this.getY() , offset);
 	},
 	
+	getRealPos: function(c, offset){
+		return c * 32 + offset;
+	},
 	
 	getX : function(){
 		return this.attrs.x;
@@ -42,6 +45,19 @@ AbstractView.prototype = {
 	
 	getY: function(){
 		return this.attrs.y;
+	},
+	
+	getCoordinate: function(x, y, offsetX, offsetY){
+		var posInLayer = {
+			x: x - offsetX,
+			y: y - offsetY
+		}
+		var coordinate = {
+			x: ~~(posInLayer.x / 32),
+			y: ~~(posInLayer.y / 32)
+		};
+		
+		return coordinate;
 	}
 	
 	

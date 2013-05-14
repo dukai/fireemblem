@@ -9,7 +9,7 @@ var SoliderView = function(options){
 SoliderView.prototype = {
 	_initSoliderView: function(options){
 		AbstractView.call(this, options);
-		this.spriteImageName = 'soldier';
+		this.bodyImageName = 'soldier';
 		this.offsetX = -8;
 		this.offsetY = -16;
 		this.defaultAnimation = 'idle';
@@ -18,7 +18,7 @@ SoliderView.prototype = {
 		
 		this.status = SoliderView.STATUS.NORMAL;
 		
-		this.sprite = new Kinetic.Sprite({
+		this.body = new Kinetic.Sprite({
 			x: this.getRealPos(this.getModel().getX(), this.offsetX),
 			y: this.getRealPos(this.getModel().getY(), this.offsetY),
 			image: this.getImage(),
@@ -54,17 +54,17 @@ SoliderView.prototype = {
 		});
 		this.getTolayer().add(this.moveRangeGroup);
 		this.getTolayer().add(this.atkRangeGroup);
-		this.getTolayer().add(this.sprite);
-		this.getTolayer().add(this.popMenuGroup);
-		this.sprite.start();
+		this.getTolayer().add(this.body);
+		//this.getTolayer().add(this.popMenuGroup);
+		this.body.start();
 		this._initSoliderViewEvents();
 	},
 	
 	_initSoliderViewEvents: function(){
 		var self =  this;
-		this.sprite.on('click', function(){
-			self.soliderActive();
-		});
+		//this.body.on('click', function(){
+			//self.soliderActive();
+		//});
 	},
 	/**
 	 * 点击士兵动作 
@@ -82,21 +82,24 @@ SoliderView.prototype = {
 	 */
 	showMoveRange: function(){
 		this.status = SoliderView.STATUS.ACTIVE;
+		this.moveCoordinateList = this.getModel().getMoveNodeList(this.getHitMap());
 		var self = this;
 		this.moveRange = new RangeView({
 			x: 0,
 			y: 0,
-			rangeList: this.getModel().getMoveNodeList(this.getHitMap()),
+			rangeList: this.moveCoordinateList,
 			fill: 'rgba(0, 100, 0, .5)'
 		});
 		var layer  = this.getTolayer();
 		var offsetX = layer.getX();
 		var offsetY = layer.getY();
+		/*
 		this.moveRange.on('click', function(e){
 			var mpos = {x: e.layerX, y: e.layerY};
 			var coordinate = self.getCoordinate(mpos.x, mpos.y, offsetX, offsetY);
 			self.gotoClickPosition(coordinate);
 		});
+		*/
 		this.moveRangeGroup.add(this.moveRange);
 	},
 	/**
@@ -106,10 +109,19 @@ SoliderView.prototype = {
 	gotoClickPosition: function(coordinate){
 		var self = this;
 		
-		this.spriteGoto(coordinate.x, coordinate.y, function(){
+		this.bodyGoto(coordinate.x, coordinate.y, function(){
 			self.moveRange.remove();
 			self.showOperationMenu(coordinate);
 		});
+	},
+	/**
+	 * 重置位置 
+	 */
+	restorePosition: function(){
+		this.moveRange && this.moveRange.remove();
+		this.atkRange && this.atkRange.remove();
+		this.status = SoliderView.STATUS.NORMAL;
+		this.bodyGoto(this.getModel().getX(), this.getModel().getY());
 	},
 	/**
 	 *显示菜单 
@@ -134,7 +146,7 @@ SoliderView.prototype = {
 				}}, 
 				{text: '取消', callback: function(){
 					//TODO: go back to the last position
-					self.spriteGoto(self.getModel().getX(), self.getModel().getY());
+					self.bodyGoto(self.getModel().getX(), self.getModel().getY());
 					self.status = SoliderView.STATUS.NORMAL;
 				}}
 			]
@@ -147,14 +159,18 @@ SoliderView.prototype = {
 	 */
 	showAtkRange: function(){
 		this.status = SoliderView.STATUS.ATK;
-		var atkList = this.getModel().getAtkNodeList(this.getHitMap());
-		console.log(atkList);
+		var atkList = this.atkCoordinateList = this.getModel().getAtkNodeList(this.getHitMap());
 		this.atkRange = new RangeView({
 			x: 0,
 			y: 0,
 			rangeList: atkList,
 			fill: 'rgba(255, 000, 0, .4)'
 		});
+		/*
+		this.atkRange.on('click', function(e){
+			
+		});
+		*/
 		this.atkRangeGroup.add(this.atkRange);
 	},
 	
@@ -162,8 +178,8 @@ SoliderView.prototype = {
 	 * 
 	 */
 	awaiting: function(){
-		self.status = SoliderView.STATUS.WAITING;
-		this.sprite.stop();
+		this.status = SoliderView.STATUS.WAITING;
+		this.body.stop();
 	},
 	
 	/**
@@ -172,8 +188,8 @@ SoliderView.prototype = {
 	 * @param {int} y
 	 * @param {function} callback
 	 */
-	spriteGoto: function(x, y, callback){
-		this.sprite.transitionTo({
+	bodyGoto: function(x, y, callback){
+		this.body.transitionTo({
 			x: this.getRealPos(x , this.offsetX),
 			y: this.getRealPos(y , this.offsetY),
 			duration: .2,
@@ -181,6 +197,29 @@ SoliderView.prototype = {
 				callback && callback();
 			}
 		});
+	},
+	/**
+	 *判断是否在坐标列表中 
+ 	 * @param {Object} coordinate
+	 */
+	isInCoordinateList: function(coordinate){
+		var list;
+		if(this.status == SoliderView.STATUS.ACTIVE){
+			list = this.moveCoordinateList;
+		}else if(this.status == SoliderView.STATUS.ATK){
+			list = this.atkCoordinateList;
+		}else{
+			return false;
+		}
+		
+		for(var i = 0, len = list.length; i < len; i++){
+			if(list[i].x == coordinate.x && list[i].y == coordinate.y){
+				return true;
+			}
+		}
+		
+		return false;
+		
 	},
 	
 	getImage: function(){
@@ -230,6 +269,7 @@ SoliderView.prototype = {
 	getModel: function(){
 		return this.attrs.model;
 	}
+	
 };
 
 extend(SoliderView, AbstractView);

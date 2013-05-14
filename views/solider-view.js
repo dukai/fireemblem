@@ -93,9 +93,9 @@ SoliderView.prototype = {
 	/**
 	 *显示可移动范围 
 	 */
-	showMoveRange: function(){
+	showMoveRange: function(enemyCoordinates){
 		this.status = SoliderView.STATUS.ACTIVE;
-		this.moveCoordinateList = this.getModel().getMoveNodeList(this.getHitMap());
+		this.moveCoordinateList = this.getModel().getMoveNodeList(this.getHitMap(), enemyCoordinates);
 		var self = this;
 		this.moveRange = new RangeView({
 			x: 0,
@@ -171,9 +171,9 @@ SoliderView.prototype = {
 	/**
 	 * 显示可以攻击的范围 
 	 */
-	showAtkRange: function(){
+	showAtkRange: function(enemyCoordinates){
 		this.status = SoliderView.STATUS.ATK;
-		var atkList = this.atkCoordinateList = this.getModel().getAtkNodeList(this.getHitMap());
+		var atkList = this.atkCoordinateList = this.getModel().getAtkNodeList(this.getHitMap(), enemyCoordinates);
 		this.atkRange = new RangeView({
 			x: 0,
 			y: 0,

@@ -70,6 +70,7 @@ MainLayout.prototype = {
 				if(self.activeView.status == SoliderView.STATUS.ATK){
 					if(self.activeView.isInCoordinateList(coordinate)){
 						self.activeView.body.setAnimation("atk");
+						self.activeView.body.moveToTop();
 						self.activeView.getModel().updatePosition();
 						self.activeView.atkRange.remove();
 						return;
@@ -130,7 +131,7 @@ MainLayout.prototype = {
 				}}
 			]
 		});
-		
+		this.popMenuGroup.moveToTop();
 		this.popMenuGroup.add(this.popMenu);
 	},
 	/**

@@ -53,10 +53,20 @@ MainLayout.prototype = {
 			var offsetY = this.getY();
 			var mpos = {x: e.layerX, y: e.layerY};
 			var coordinate = self.getCoordinate(mpos.x, mpos.y, offsetX, offsetY);
+			//如果存在激活对象
 			if(self.activeView){
-				if(self.activeView.getModel().getX() == coordinate.x && self.activeView.getModel().getY() == coordinate.y && self.activeView.status != SoliderView.STATUS.NORMAL){
-					return;
+				//如果点击的目标为激活对象
+				if(self.activeView.getModel().getX() == coordinate.x && self.activeView.getModel().getY() == coordinate.y){
+					//如果是激活状态则显示菜单
+					if(self.activeView.status == SoliderView.STATUS.ACTIVE){
+						self.showOperationMenu(coordinate);
+						self.activeView.moveRange.remove();
+						return;
+					}else if(self.activeView.status != SoliderView.STATUS.NORMAL){//如果不是普通状态直接返回
+						return;
+					}
 				}
+				//如果是激活状态并点击了移动范围内，移动角色并打开菜单
 				if(self.activeView.status == SoliderView.STATUS.ACTIVE){
 					if(self.activeView.isInCoordinateList(coordinate)){
 						self.activeView.bodyGoto(coordinate.x, coordinate.y, function(){
@@ -66,7 +76,7 @@ MainLayout.prototype = {
 						return;
 					}
 				}
-				
+				//如果是攻击状态，并点击了攻击范围则进行攻击
 				if(self.activeView.status == SoliderView.STATUS.ATK){
 					if(self.activeView.isInCoordinateList(coordinate)){
 						self.activeView.body.setAnimation("atk");
@@ -77,13 +87,14 @@ MainLayout.prototype = {
 					}
 				}
 			}
+			//如果激活对象存在并且不是等待状态，返回原来的位置
 			if(self.activeView && self.activeView.status != SoliderView.STATUS.WAITING){
 				self.activeView.restorePosition();
 			}
-				
+			//如果存在弹出菜单，移除，并将激活对象置空
 			self.popMenu && self.popMenu.remove();
 			self.activeView = null;
-			
+			//循环所有对象是否是点击了对象
 			for(var i = 0, len = self.views.length; i < len; i++){
 				var view = self.views[i];
 				if(view.getModel().getX() == coordinate.x && view.getModel().getY() == coordinate.y && view.status != SoliderView.STATUS.WAITING){

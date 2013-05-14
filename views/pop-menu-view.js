@@ -30,9 +30,11 @@ PopMenuView.prototype = {
 			menuBg.menuindex = i;
 			
 			menuBg.on('click', function(e){
+				e.cancelBubble = true;
 				self.getItemsList()[this.menuindex].callback && self.getItemsList()[this.menuindex].callback();
-				
+				var layer = self.getLayer();
 				self.remove();
+				layer.draw();
 			});
 			
 			menuBg.on('mouseover', function(e){

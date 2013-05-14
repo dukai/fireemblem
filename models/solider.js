@@ -14,12 +14,12 @@ Solider.prototype = {
 		];
 	},
 	
-	getMoveNodeList: function(hitmap){
-		return this.getRange({x: this.getX(), y: this.getY()}, this.getMoveRange(), hitmap);
+	getMoveNodeList: function(hitmap, enemyCoordinates){
+		return this.getRange({x: this.getX(), y: this.getY()}, this.getMoveRange(), hitmap, enemyCoordinates);
 	},
 	
-	getAtkNodeList: function(hitmap){
-		return this.getRange({x: this.getSecCoordinate().x, y: this.getSecCoordinate().y}, this.getAtkRange(), hitmap);
+	getAtkNodeList: function(hitmap, enemyCoordinates){
+		return this.getAttackRange({x: this.getSecCoordinate().x, y: this.getSecCoordinate().y}, this.getAtkRange(), hitmap, enemyCoordinates);
 	},
 	
 	getMoveRange: function(){

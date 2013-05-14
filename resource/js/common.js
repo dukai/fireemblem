@@ -57,7 +57,8 @@ var gameResources = [
 	{'name': 'newworld', type: 'image', src: 'data/images/newworld.png'},
 	{'name': 'hit', type: 'image', src: 'data/images/metatiles32x32.png'},
 	{'name': 'map1', type: 'tmx', 'src': 'data/map1.tmx'},
-	{'name': 'soldier', type:'image', src: 'data/images/soldier.png'},
+	{'name': 'solider', type:'image', src: 'data/images/soldier.png'},
+	{'name': 'solider_red', type:'image', src: 'data/images/solider_red.png'},
 	{'name': 'archer', type:'image', src: 'data/images/archer.png'},
 	{'name': 'knight', type:'image', src: 'data/images/knight.png'},
 	{name: 'test', type: 'tmx', src: 'data/test.tmx'},
@@ -92,7 +93,6 @@ resourceLoader.onComplete = function(){
 		stage: stage,
 		map: map
 	});
-	
 	var soliderModel = new Solider({
 		x: 8, 
 		y: 6,
@@ -103,13 +103,29 @@ resourceLoader.onComplete = function(){
 	var soliderView = new SoliderView({
 		x: 8,
 		y: 6,
-		image: resourceLoader.get('soldier'),
+		image: resourceLoader.get('solider'),
 		tolayer: layout.layer,
 		hitmap: hitmap,
 		model: soliderModel
 	});
-	
+	soliderView.name = 'xiaoming';
+	var soliderXM = new SoliderView({
+		x: 8,
+		y: 6,
+		image: resourceLoader.get('solider_red'),
+		tolayer: layout.layer,
+		hitmap: hitmap,
+		model: new Solider({
+			x: 18,
+			y: 10,
+			moveRange: 5,
+			atkRange: 1
+		})
+	});
+	soliderXM.name = "xiaogang";
+	soliderXM.flip('left');
 	layout.addView(soliderView);
+	layout.addEnemyView(soliderXM);
 	
 	layer = new  Kinetic.Layer({});
 	var roundBtn = new BtnView({

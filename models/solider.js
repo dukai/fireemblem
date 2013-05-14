@@ -19,7 +19,7 @@ Solider.prototype = {
 	},
 	
 	getAtkNodeList: function(hitmap){
-		return this.getRange({x: this.getX(), y: this.getY()}, this.getAtkRange(), hitmap);
+		return this.getRange({x: this.getSecCoordinate().x, y: this.getSecCoordinate().y}, this.getAtkRange(), hitmap);
 	},
 	
 	getMoveRange: function(){
@@ -28,7 +28,24 @@ Solider.prototype = {
 	
 	getAtkRange: function(){
 		return this.attrs.atkRange;
+	},
+	
+	setSecCoordinate: function(coordinate){
+		this.secCoordinate = coordinate;
+	},
+	
+	getSecCoordinate: function(){
+		return this.secCoordinate;
+	},
+	
+	updatePosition: function(){
+		if(this.secCoordinate){
+			this.setX(this.secCoordinate.x);
+			this.setY(this.secCoordinate.y);
+		}
 	}
+	
+	
 };
 
 extend(Solider, AbstractModel);

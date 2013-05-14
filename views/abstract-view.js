@@ -58,6 +58,14 @@ AbstractView.prototype = {
 		};
 		
 		return coordinate;
+	},
+	
+	getWidth: function(){
+		return this.attrs.width;
+	},
+	
+	getHeight: function(){
+		return this.attrs.height;
 	}
 	
 	

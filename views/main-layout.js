@@ -53,7 +53,7 @@ MainLayout.prototype = {
 			var mpos = {x: e.layerX, y: e.layerY};
 			var coordinate = self.getCoordinate(mpos.x, mpos.y, offsetX, offsetY);
 			if(self.activeView){
-				if(self.activeView.getX() == coordinate.x && self.activeView.getY() == coordinate.y){
+				if(self.activeView.getModel().getX() == coordinate.x && self.activeView.getModel().getY() == coordinate.y){
 					return;
 				}
 				if(self.activeView.status == SoliderView.STATUS.ACTIVE){
@@ -75,7 +75,10 @@ MainLayout.prototype = {
 					}
 				}
 			}
-			self.activeView && self.activeView.restorePosition();
+			if(self.activeView && self.activeView.status != SoliderView.STATUS.WAITING){
+				self.activeView.restorePosition();
+			}
+				
 			self.popMenu && self.popMenu.remove();
 			self.activeView = null;
 			
@@ -88,7 +91,9 @@ MainLayout.prototype = {
 			}
 		});
 	},
-	
+	/**
+	 *结束回合开始新回合 
+	 */
 	newRound: function(){
 		var self = this;
 		for(var i = 0, len = self.views.length; i < len; i++){
@@ -127,7 +132,13 @@ MainLayout.prototype = {
 		
 		this.popMenuGroup.add(this.popMenu);
 	},
-	
+	/**
+	 *获取格线组 
+	 * @param {Object} width
+	 * @param {Object} height
+	 * @param {Object} rows
+	 * @param {Object} columns
+	 */
 	getLinesGroup: function(width, height, rows, columns){
 		var linesGroup = new Kinetic.Group({
 			x:0,

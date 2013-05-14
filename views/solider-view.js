@@ -66,6 +66,19 @@ SoliderView.prototype = {
 			//self.soliderActive();
 		//});
 	},
+	
+	flip: function(value){
+		if(value == 'right'){
+			this.body.setScale(1, 1);
+			this.body.setOffset(0, 0);
+		}
+		
+		if(value == 'left'){
+			this.body.setScale(-1, 1);
+			this.body.setOffset(48, 0);
+		}
+	},
+	
 	/**
 	 * 点击士兵动作 
 	 */
@@ -118,6 +131,7 @@ SoliderView.prototype = {
 	 * 重置位置 
 	 */
 	restorePosition: function(){
+		this.status = SoliderView.STATUS.NORMAL;
 		this.moveRange && this.moveRange.remove();
 		this.atkRange && this.atkRange.remove();
 		this.status = SoliderView.STATUS.NORMAL;

@@ -33,6 +33,7 @@ MainLayout.prototype = {
 		stage.add(this.layer);
 		
 		this.views = [];
+		this.enemyViews = [];
 		this.activeView = null;
 		
 		this.popMenuGroup = new Kinetic.Group({
@@ -53,7 +54,7 @@ MainLayout.prototype = {
 			var mpos = {x: e.layerX, y: e.layerY};
 			var coordinate = self.getCoordinate(mpos.x, mpos.y, offsetX, offsetY);
 			if(self.activeView){
-				if(self.activeView.getModel().getX() == coordinate.x && self.activeView.getModel().getY() == coordinate.y){
+				if(self.activeView.getModel().getX() == coordinate.x && self.activeView.getModel().getY() == coordinate.y && self.activeView.status != SoliderView.STATUS.NORMAL){
 					return;
 				}
 				if(self.activeView.status == SoliderView.STATUS.ACTIVE){
@@ -84,9 +85,9 @@ MainLayout.prototype = {
 			
 			for(var i = 0, len = self.views.length; i < len; i++){
 				var view = self.views[i];
-				if(view.getModel().getX() == coordinate.x && view.getModel().getY() == coordinate.y){
+				if(view.getModel().getX() == coordinate.x && view.getModel().getY() == coordinate.y && view.status != SoliderView.STATUS.WAITING){
 					self.activeView = view;
-					self.activeView.soliderActive();
+					self.activeView.showMoveRange(self.getEnemyCoordinates());
 				}
 			}
 		});
@@ -115,7 +116,7 @@ MainLayout.prototype = {
 			itemsList: [
 				{text: '攻击', callback: function(){
 					view.getModel().setSecCoordinate(coordinate);
-					view.showAtkRange();
+					view.showAtkRange(self.getEnemyCoordinates());
 				}}, 
 				{text: '待机', callback: function(){
 					//TODO: do nothing
@@ -177,6 +178,23 @@ MainLayout.prototype = {
 	
 	addView: function(view){
 		this.views.push(view);
+	},
+	/**
+	 *添加敌对角色 
+ 	 * @param {Object} view
+	 */
+	addEnemyView: function(view){
+		this.enemyViews.push(view);
+	},
+	
+	getEnemyCoordinates: function(){
+		var c = {};
+		for(var i = 0, len = this.enemyViews.length; i < len; i++){
+			var view = this.enemyViews[i];
+			c[view.getModel().getX().toString() + view.getModel().getY().toString()] = true;
+		}
+		
+		return c;
 	},
 	
 	getStage: function(){

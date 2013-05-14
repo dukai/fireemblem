@@ -129,7 +129,7 @@ resourceLoader.onComplete = function(){
 	
 	layer = new  Kinetic.Layer({});
 	var roundBtn = new BtnView({
-		x: 430,
+		x: 410,
 		y: 0,
 		text: '结束回合'
 	});

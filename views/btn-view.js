@@ -8,20 +8,20 @@ BtnView.prototype = {
 		var menuBg = new Kinetic.Rect({
 			x: 0,
 			y: 0,
-			width: 100,
-			height:24,
+			width: 140,
+			height:50,
 			fill: 'green'
 		});
 		
 		var word = new Kinetic.Text({
 			x: 0,
-			y: 4,
+			y: 14,
 			text : this.getText(),
-			fontSize: 14,
+			fontSize: 24,
 			fontFamily: "Microsoft YaHei",
 			fill: '#fff',
-			height:24,
-			width:100,
+			height:40,
+			width:140,
 			align : 'center',
 			listening : false
 		});

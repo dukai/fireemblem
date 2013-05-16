@@ -20,12 +20,12 @@ PopMenuView.prototype = {
 		var list = this.getItemsList();
 		for(var i = 0, len = list.length; i < len; i++){
 			var n = list[i];
-			var menuBg = new Kinetic.Rect({
+			var menuBg = new Kinetic.Image({
 				x: 0,
-				y: i * 25,
-				width: 100,
-				height:24,
-				fill: 'green'
+				y: i * 40,
+				width: 132,
+				height:38,
+				image: resourceLoader.get('btn_bg')
 			});
 			menuBg.menuindex = i;
 			
@@ -37,21 +37,15 @@ PopMenuView.prototype = {
 				layer.draw();
 			});
 			
-			menuBg.on('mouseover', function(e){
-				this.setFill( '#090');
-			});
-			menuBg.on('mouseout', function(e){
-				this.setFill('green');
-			});
 			var word = new Kinetic.Text({
 				x: 0,
-				y: i* 25 + 4,
+				y: i* 40 + 10,
 				text : n.text,
-				fontSize: 14,
+				fontSize: 18,
 				fontFamily: "Microsoft YaHei",
 				fill: '#fff',
-				height:24,
-				width:100,
+				height:38,
+				width:132,
 				align : 'center',
 				listening : false
 			});

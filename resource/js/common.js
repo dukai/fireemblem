@@ -61,6 +61,7 @@ var gameResources = [
 	{'name': 'solider_red', type:'image', src: 'data/images/solider_red.png'},
 	{'name': 'archer', type:'image', src: 'data/images/archer.png'},
 	{'name': 'knight', type:'image', src: 'data/images/knight.png'},
+	{'name': 'lotus', type:'image', src: 'data/lotus.png'},
 	{name: 'test', type: 'tmx', src: 'data/test.tmx'},
 	{name: 'new', type:'image', src: 'data/new.png'},
 	{name: 'newmap', type: 'tmx', src: 'data/new.tmx'},

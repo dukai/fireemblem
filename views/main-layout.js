@@ -121,27 +121,37 @@ MainLayout.prototype = {
 	 *显示菜单 
 	 */
 	showOperationMenu: function(coordinate, itemsList){
+		
+		var items = {
+			atk: {text: '攻击', callback: function(){
+				view.showAtkRange(ec);
+			}}, 
+			await: {text: '待机', callback: function(){
+				//TODO: do nothing
+				view.getModel().setX(coordinate.x);
+				view.getModel().setY(coordinate.y);
+				view.awaiting();
+				
+			}}, 
+			cancel: {text: '取消', callback: function(){
+				view.restorePosition();
+			}}
+		};
+		var itemTmp = [];
 		var self = this;
 		var view = this.activeView;
+		view.getModel().setSecCoordinate(coordinate);
+		var ec = self.getEnemyCoordinates();
+		var canAtk = view.canAtk(ec);
+		if(canAtk){
+			itemTmp.push(items.atk);
+		}
+		itemTmp.push(items.await);
+		itemTmp.push(items.cancel);
 		this.popMenu = new PopMenuView({
 			x: this.getRealPos(coordinate.x , 42), 
 			y: this.getRealPos(coordinate.y , 0),
-			itemsList: [
-				{text: '攻击', callback: function(){
-					view.getModel().setSecCoordinate(coordinate);
-					view.showAtkRange(self.getEnemyCoordinates());
-				}}, 
-				{text: '待机', callback: function(){
-					//TODO: do nothing
-					view.getModel().setX(coordinate.x);
-					view.getModel().setY(coordinate.y);
-					view.awaiting();
-					
-				}}, 
-				{text: '取消', callback: function(){
-					view.restorePosition();
-				}}
-			]
+			itemsList: itemTmp
 		});
 		this.popMenuGroup.moveToTop();
 		this.popMenuGroup.add(this.popMenu);

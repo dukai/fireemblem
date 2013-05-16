@@ -292,5 +292,6 @@ SoliderView.STATUS = {
 	NORMAL: 0,
 	ACTIVE: 1,
 	WAITING: 2,
-	ATK: 3
+	ATK: 3,
+	MOVED: 4
 }

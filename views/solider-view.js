@@ -187,7 +187,10 @@ SoliderView.prototype = {
 		*/
 		this.atkRangeGroup.add(this.atkRange);
 	},
-	
+	canAtk: function(enemyCoordinates){
+		var atkList = this.atkCoordinateList = this.getModel().getAtkNodeList(this.getHitMap(), enemyCoordinates);
+		return atkList.length != 0;
+	},
 	/**
 	 * 
 	 */

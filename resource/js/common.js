@@ -62,8 +62,6 @@ var gameResources = [
 	{'name': 'archer', type:'image', src: 'data/images/archer.png'},
 	{'name': 'knight', type:'image', src: 'data/images/knight.png'},
 	{'name': 'lotus', type:'image', src: 'data/lotus.png'},
-	{name: 'round_btn', type: 'image', src: 'data/images/round_btn.png'},
-	{name: 'forest', type: 'image', src: 'data/forest.png'},
 	{name: 'test', type: 'tmx', src: 'data/test.tmx'},
 	{name: 'new', type:'image', src: 'data/new.png'},
 	{name: 'newmap', type: 'tmx', src: 'data/new.tmx'},
@@ -132,11 +130,9 @@ resourceLoader.onComplete = function(){
 	
 	layer = new  Kinetic.Layer({});
 	var roundBtn = new BtnView({
-		x: 420,
-		y: 10,
-		width:132,
-		height:48,
-		image: resourceLoader.get('round_btn')
+		x: 410,
+		y: 0,
+		text: '结束回合'
 	});
 	var round = 1;
 	var word = new Kinetic.Text({

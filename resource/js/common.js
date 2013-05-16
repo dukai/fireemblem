@@ -63,6 +63,7 @@ var gameResources = [
 	{'name': 'knight', type:'image', src: 'data/images/knight.png'},
 	{'name': 'lotus', type:'image', src: 'data/lotus.png'},
 	{name: 'round_btn', type: 'image', src: 'data/images/round_btn.png'},
+	{name: 'btn_bg', type: 'image', src: 'data/images/btn_bg.png'},
 	{name: 'forest', type: 'image', src: 'data/forest.png'},
 	{name: 'test', type: 'tmx', src: 'data/test.tmx'},
 	{name: 'new', type:'image', src: 'data/new.png'},

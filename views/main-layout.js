@@ -68,8 +68,9 @@ MainLayout.prototype = {
 				}
 				//如果是激活状态并点击了移动范围内，移动角色并打开菜单
 				if(self.activeView.status == SoliderView.STATUS.ACTIVE){
-					if(self.activeView.isInCoordinateList(coordinate)){
+					if(self.activeView.isInCoordinateList(coordinate) && self.activeView.status == SoliderView.STATUS.ACTIVE){
 						self.activeView.bodyGoto(coordinate.x, coordinate.y, function(){
+							self.activeView.status = SoliderView.STATUS.MOVED;
 							self.showOperationMenu(coordinate);
 							self.activeView.moveRange.remove();
 						});

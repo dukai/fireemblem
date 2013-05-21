@@ -9,6 +9,10 @@ AbstractModel.prototype = {
 		for(var i in options){
 			this.attrs[i] = options[i];
 		}
+		
+		if(!this.getName()){
+			this.setName(util.getName(true));
+		}
 	},
 	
 	/**
@@ -73,20 +77,11 @@ AbstractModel.prototype = {
 		return list;
 	},
 	
-	getX: function(){
-		return this.attrs.x;
-	},
-	
-	getY: function(){
-		return this.attrs.y;
-	},
-	
-	setX: function(value){
-		this.attrs.x = value;
-	},
-	
-	setY: function(value){
-		this.attrs.y = value;
+	attack: function(model){
+		console.log(this.getName() + '攻击了' + model.getName());
 	}
-	
 };
+
+util.addGetterSetter(AbstractModel, 'x');
+util.addGetterSetter(AbstractModel, 'y');
+util.addGetterSetter(AbstractModel, 'name');

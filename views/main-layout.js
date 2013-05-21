@@ -33,7 +33,9 @@ MainLayout.prototype = {
 		stage.add(this.layer);
 		
 		this.views = [];
+		this.viewsHashMap = {};
 		this.enemyViews = [];
+		this.enemyViewsHashMap = {};
 		this.activeView = null;
 		
 		this.popMenuGroup = new Kinetic.Group({
@@ -201,6 +203,7 @@ MainLayout.prototype = {
 	
 	addView: function(view){
 		this.views.push(view);
+		this.viewsHashMap[view.getModule().getX().toString() + view.getModule().getY().toString()] = true;
 	},
 	/**
 	 *添加敌对角色 
@@ -208,6 +211,7 @@ MainLayout.prototype = {
 	 */
 	addEnemyView: function(view){
 		this.enemyViews.push(view);
+		this.enemyViewsHashMap[view.getModule().getX().toString() + view.getModule().getY().toString()] = true;
 	},
 	
 	getEnemyCoordinates: function(){

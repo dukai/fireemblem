@@ -86,6 +86,7 @@ MainLayout.prototype = {
 						self.activeView.body.moveToTop();
 						self.activeView.getModel().updatePosition();
 						self.activeView.atkRange.remove();
+						self.activeView.getModel().attack(self.enemyViewsHashMap[coordinate.x.toString() + coordinate.y.toString()].getModel());
 						return;
 					}
 				}
@@ -203,7 +204,7 @@ MainLayout.prototype = {
 	
 	addView: function(view){
 		this.views.push(view);
-		this.viewsHashMap[view.getModule().getX().toString() + view.getModule().getY().toString()] = true;
+		this.viewsHashMap[view.getModel().getX().toString() + view.getModel().getY().toString()] = view;
 	},
 	/**
 	 *添加敌对角色 
@@ -211,7 +212,7 @@ MainLayout.prototype = {
 	 */
 	addEnemyView: function(view){
 		this.enemyViews.push(view);
-		this.enemyViewsHashMap[view.getModule().getX().toString() + view.getModule().getY().toString()] = true;
+		this.enemyViewsHashMap[view.getModel().getX().toString() + view.getModel().getY().toString()] = view;
 	},
 	
 	getEnemyCoordinates: function(){

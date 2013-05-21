@@ -285,6 +285,12 @@ SoliderView.prototype = {
 	
 	getModel: function(){
 		return this.attrs.model;
+	},
+	/**
+	 *获取view hash，为坐标值字符串xy 
+	 */
+	getViewHash: function(){
+		return this.getModel().getX().toString() + this.getModel().getY().toString();
 	}
 	
 };

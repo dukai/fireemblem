@@ -73,6 +73,8 @@ var gameResources = [
 	{name: 'v2', type: 'image', src: 'data/v2.png'}
 ];
 
+debug = true;
+
 resourceLoader.load(gameResources);
 
 resourceLoader.onProgress = function(e){
@@ -101,7 +103,8 @@ resourceLoader.onComplete = function(){
 		x: 8, 
 		y: 6,
 		moveRange: 4,
-		atkRange: 1
+		atkRange: 1,
+		person: new Hero()
 	});
 	
 	var soliderView = new SoliderView({
@@ -123,7 +126,8 @@ resourceLoader.onComplete = function(){
 			x: 18,
 			y: 10,
 			moveRange: 5,
-			atkRange: 1
+			atkRange: 1,
+			person: new Knight()
 		})
 	});
 	soliderXM.name = "xiaogang";

@@ -22,10 +22,11 @@ PopMenuView.prototype = {
 			var n = list[i];
 			var menuBg = new Kinetic.Image({
 				x: 0,
-				y: i * 40,
-				width: 132,
-				height:38,
-				image: resourceLoader.get('btn_bg')
+				y: i * 32,
+				width: 106,
+				height:32,
+				fillPatternImage: resourceLoader.get('btn_bg'),
+				fillPatternOffset: {x: 0, y: 0}
 			});
 			menuBg.menuindex = i;
 			
@@ -37,15 +38,20 @@ PopMenuView.prototype = {
 				layer.draw();
 			});
 			
+			menuBg.on('mousedown', function(e){
+				this.setFillPatternOffset(0, 32);
+				this.getLayer().draw();
+			});
+			
 			var word = new Kinetic.Text({
 				x: 0,
-				y: i* 40 + 10,
+				y: i* 32 + 7,
 				text : n.text,
 				fontSize: 18,
 				fontFamily: "Microsoft YaHei",
 				fill: '#fff',
-				height:38,
-				width:132,
+				height:32,
+				width:106,
 				align : 'center',
 				listening : false
 			});

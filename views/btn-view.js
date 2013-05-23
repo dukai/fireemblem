@@ -17,11 +17,9 @@ BtnView.prototype = {
 			menuBg.on('mousedown', function(e){
 				this.setFillPatternOffset(0, 48);
 				this.getLayer().draw();
-				console.log('mousedown');
 			});
 			menuBg.on('mouseup', function(e){
 				this.setFillPatternOffset(0, 0);
-				console.log('mouseup');
 			});
 			this.add(menuBg);
 		}else{

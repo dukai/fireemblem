@@ -78,10 +78,11 @@ AbstractModel.prototype = {
 	},
 	
 	attack: function(model){
-		console.log(this.getName() + '攻击了' + model.getName());
+		this.getPerson().attack(model.getPerson());
 	}
 };
 
 util.addGetterSetter(AbstractModel, 'x');
 util.addGetterSetter(AbstractModel, 'y');
 util.addGetterSetter(AbstractModel, 'name');
+util.addGetterSetter(AbstractModel, 'person');

@@ -1,4 +1,8 @@
 /**
+ *TODO: 被攻击的对象死亡后从地图上移出 
+ */
+
+/**
  * 获取移动范围
  * @param {Object} target {x, y}
  * @param {int} range 移动范围 

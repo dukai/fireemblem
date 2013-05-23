@@ -83,6 +83,10 @@ MainLayout.prototype = {
 				if(self.activeView.status == SoliderView.STATUS.ATK){
 					if(self.activeView.isInCoordinateList(coordinate)){
 						self.activeView.body.setAnimation("atk");
+						self.activeView.body.afterFrame(5, function(){
+							console.log(this);
+							this.setAnimation('idle');
+						});
 						self.activeView.body.moveToTop();
 						self.activeView.getModel().updatePosition();
 						self.activeView.atkRange.remove();

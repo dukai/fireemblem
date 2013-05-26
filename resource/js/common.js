@@ -179,7 +179,11 @@ resourceLoader.onComplete = function(){
 	
 	layer.add(roundBtn);
 	
-	
+	layer.add(new ProgressBarView({
+		x: 100,
+		y: 100,
+		fill: '#fff'
+	}));
 	
 	stage.add(layer);
 	

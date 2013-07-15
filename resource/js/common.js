@@ -178,12 +178,14 @@ resourceLoader.onComplete = function(){
 	});
 	
 	layer.add(roundBtn);
-	
-	layer.add(new ProgressBarView({
+	var pbv = new ProgressBarView({
 		x: 100,
 		y: 100,
 		fill: '#fff'
-	}));
+	});
+	layer.add(pbv);
+
+	pbv.setPercent(.5);
 	
 	stage.add(layer);
 	

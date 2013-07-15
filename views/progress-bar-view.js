@@ -18,7 +18,7 @@ ProgressBarView.prototype = {
 			opacity: .5
 		});
 		
-		var bar = new Kinetic.Rect({
+		var bar = this.bar = new Kinetic.Rect({
 			x: 2,
 			y: 2,
 			width:100,
@@ -28,6 +28,11 @@ ProgressBarView.prototype = {
 		
 		this.add(bg);
 		this.add(bar);
+	},
+
+	setPercent: function(percent ){
+		this.bar.setWidth(parseInt(percent * 100));
+		//this.bar.transitionTo({width: percent * 100});
 	}
 };
 

@@ -74,7 +74,8 @@ var gameResources = [
 	{name: 'newmap', type: 'tmx', src: 'data/new.tmx'},
 	{name: 'demo_map', type: 'json', src: 'data/demo_map.json'},
 	{name: 'v2_map', type: 'json', src: 'data/v2.json'},
-	{name: 'v2', type: 'image', src: 'data/v2.png'}
+	{name: 'v2', type: 'image', src: 'data/v2.png'},
+	{name: 'info_bg', type: 'image', src: 'resource/images/info_bg.png'}
 ];
 
 debug = true;
@@ -183,8 +184,13 @@ resourceLoader.onComplete = function(){
 		y: 100,
 		fill: '#fff'
 	});
+	
+	var infoBoard = new InfoBoardView({
+		x: 20,
+		y: 520
+	});
 	layer.add(pbv);
-
+	layer.add(infoBoard);
 	pbv.setPercent(.5);
 	
 	stage.add(layer);

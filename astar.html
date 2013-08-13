@@ -24,7 +24,7 @@ var mapArray = [];
 for(var d1 = 0; d1 < 80; d1++){
 	var a = [];
 	for(var d2 = 0; d2 < 80; d2++){
-		if(Math.random() > .7){
+		if(Math.random() > .999){
 			a.push(1);
 		}else{
 			a.push(0);
@@ -128,10 +128,13 @@ function setSolidStatus(s){
 function eFindPath(){
 	var astar = new PathFinder.AStar(hitmap, startNode, endNode);
 	var path = astar.getPath();
+	console.log(astar.diffTime / 1000);
 	if(!path){
 		alert('Can not find path');
 		return;
 	}
+	showPath();
+	return;
 	var cursor = 0;
 	var timer = setInterval(function(){
 		var minPoint = path.nodelist[cursor];
@@ -148,7 +151,8 @@ function eFindPath(){
 	}, 20);
 
 	function showPath(){
-		var endPoint = path.nodelist[path.nodelist.length - 1];
+		
+		var endPoint = astar.endNode;
 		var timer = setInterval(function(){
 
 
@@ -161,7 +165,6 @@ function eFindPath(){
 			endPoint = endPoint.parentNode;
 			if(endPoint === null){
 				clearInterval(timer);
-				console.log(astar.diffTime / 1000);
 				return;
 			}
 		}, 20);

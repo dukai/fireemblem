@@ -105,8 +105,8 @@ resourceLoader.onComplete = function(){
 		map: map
 	});
 	var soliderModel = new Solider({
-		x: 8, 
-		y: 6,
+		x: 16, 
+		y: 9,
 		moveRange: 4,
 		atkRange: 1,
 		person: new Hero()
@@ -189,7 +189,7 @@ resourceLoader.onComplete = function(){
 		x: 20,
 		y: 520
 	});
-	layer.add(pbv);
+	//layer.add(pbv);
 	layer.add(infoBoard);
 	pbv.setPercent(.5);
 	

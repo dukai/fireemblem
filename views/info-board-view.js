@@ -17,10 +17,9 @@ InfoBoardView.prototype = {
 			x: 0,
 			y: 10,
 			text : '小明',
-			fontSize: 14,
+			fontSize: 12,
 			fontFamily: "Microsoft YaHei",
 			fill: '#fff',
-			height:24,
 			width:167,
 			align : 'center',
 			listening : false
@@ -30,11 +29,11 @@ InfoBoardView.prototype = {
 			x: 10,
 			y: 30,
 			text : 'HP',
-			fontSize: 8,
+			fontSize: 10,
 			fontFamily: "Arial",
 			fill: '#fff',
 			height:24,
-			width:20,
+			width:25,
 			align : 'right',
 			listening : false
 		});
@@ -43,11 +42,10 @@ InfoBoardView.prototype = {
 			x: 10,
 			y: 50,
 			text : 'EXP',
-			fontSize: 8,
+			fontSize: 10,
 			fontFamily: "Arial",
 			fill: '#fff',
-			height:24,
-			width:20,
+			width:25,
 			align : 'right',
 			listening : false
 		});

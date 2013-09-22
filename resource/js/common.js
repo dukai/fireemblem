@@ -48,7 +48,7 @@ function getCoordinate(x, y, offsetX, offsetY){
 	var posInLayer = {
 		x: x - offsetX,
 		y: y - offsetY
-	}
+	};
 	var coordinate = {
 		x: ~~(posInLayer.x / 32),
 		y: ~~(posInLayer.y / 32)

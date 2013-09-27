@@ -1,6 +1,6 @@
 var BtnView = function(options){
 	this._initBtnView(options);
-}
+};
 
 BtnView.prototype = {
 	_initBtnView: function(options){
@@ -63,7 +63,7 @@ BtnView.prototype = {
 		
 		
 	}
-}
+};
 Kinetic.Global.extend(BtnView, Kinetic.Group);
 Kinetic.Node.addGetterSetter(BtnView, 'text');
 Kinetic.Node.addGetterSetter(BtnView, 'image');

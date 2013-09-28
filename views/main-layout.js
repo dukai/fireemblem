@@ -21,7 +21,7 @@ MainLayout.prototype = {
 				return {
 					x: x,
 					y: y
-				}
+				};
 			}
 		});
 		
